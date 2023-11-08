@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import  com.qualcom.robotcore.hardware.DcMotor;
+import  com.qualcomm.robotcore.hardware.DcMotor;
 
 public class MotorValues {
     public double fl,fr,bl,br, globalMultiplier=0.5;
@@ -13,7 +13,7 @@ public class MotorValues {
     }
 
     public void NormaliseValues(){
-        double maxSpeed = Math.max(Math.max(Math.abs(fr),Math.abs(fr)), Math.max(Math.abs(br), Math.max(Math.abs(bl))));
+        double maxSpeed = Math.max(Math.max(Math.abs(fr),Math.abs(fr)), Math.max(Math.abs(br), Math.abs(bl)));
         
         if (maxSpeed<1) return;
         

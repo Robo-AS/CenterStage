@@ -1,12 +1,11 @@
-package org.first.inspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opMode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp(name="TeleOpMode", group="Linear OpMode");
-
+@TeleOp(name="TeleOpMode", group="Linear OpMode")
 public class TeleOpMode extends UsefulFunctions {
 
     @Override

@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualmcom.robotcore.eventloop.opmod.LinearOpMode;
-import com.qualcom.robotcore.DcMotor;
-import com.qualcom.robotcore.DcMotorSimple;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 public class UsefulFunctions extends LinearOpMode {
 
@@ -11,14 +11,17 @@ public class UsefulFunctions extends LinearOpMode {
     public void Initialise() {
 
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRight = hardwapre.get(DcMotor.class, "frontRight");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
         setMotorModes(DcMotor.RunMode.RUN_USING_ENCODERS);
 
-        setZeroPowerBehaviour(DcMotor.ZeroPowerBehaviour.BRAKE);
-        
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         setDirection(DcMotorSimple.Direction.FORWARD);
 
 
@@ -41,14 +44,7 @@ public class UsefulFunctions extends LinearOpMode {
     }
 
 
-    public void setZeroPowerBehaviour(DcMotor.setZeroPowerBehaviour mode){
 
-        frontLeft.setZeroPowerBehaviour(mode);
-        frontRight.setZeroPowerBehaviour(mode);
-        backLeft.setZeroPowerBehaviour(mode);
-        backRight.setZeroPowerBehaviour(mode);
-
-    }
 
     public void setDirection(DcMotorSimple.Direction mode){
 
@@ -70,12 +66,15 @@ public class UsefulFunctions extends LinearOpMode {
         double power_bl = -x + y - rotation;
         double power_br = x - y - rotation;
 
-        MotorValues motorValues = new MotorValues(power_flr, power_fr, power_bl, power_br);
+        MotorValues motorValues = new MotorValues(power_fl, power_fr, power_bl, power_br);
 
-        if (gamepad1.left_bumber) motorValues.SlowMode();
+        if (gamepad1.left_bumper) motorValues.SlowMode();
 
         motorValues.NormaliseValues();
-        ApplyMotorValues(motorValues);
+        applyMotorValues(motorValues);
     }
-
+    //e gen sa fie clasa abstracta
+    @Override
+    public void runOpMode () throws InterruptedException {
+    }
 }
