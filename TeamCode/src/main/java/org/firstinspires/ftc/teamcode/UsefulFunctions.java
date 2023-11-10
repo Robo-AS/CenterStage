@@ -26,8 +26,6 @@ public class UsefulFunctions extends LinearOpMode {
         frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
-
-
     }
 
     //
