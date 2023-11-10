@@ -24,7 +24,7 @@ public class UsefulFunctions extends LinearOpMode {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-        //telling the motors which direction to take(backwords or forward)
+        //telling the motors which direction to take(backwords or forward)...
         frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
         backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
