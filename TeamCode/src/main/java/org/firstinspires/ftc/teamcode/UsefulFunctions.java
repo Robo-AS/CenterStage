@@ -22,11 +22,15 @@ public class UsefulFunctions extends LinearOpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        setDirection(DcMotorSimple.Direction.FORWARD);
+        frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
     }
 
+    //
     public void setMotorModes(DcMotor.RunMode mode){
 
         frontLeft.setMode(mode);
@@ -41,17 +45,6 @@ public class UsefulFunctions extends LinearOpMode {
         frontRight.setPower(mv.fr);
         backLeft.setPower(mv.bl);
         backRight.setPower(mv.br);
-    }
-
-
-
-
-    public void setDirection(DcMotorSimple.Direction mode){
-
-        frontLeft.setDirection(mode);
-        frontRight.setDirection(mode);
-        backLeft.setDirection(mode);
-        backRight.setDirection(mode);
     }
 
     public void TeleOpDrive() {
