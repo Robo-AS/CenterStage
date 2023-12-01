@@ -3,17 +3,17 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name = "TeleOpMode", group = "Linear OpMode")
-public class TeleOpMode extends Useful_Funtions {
+public class TeleOpMode extends MovementFunctions {
 
     @Override
-    public void runOpMode(){
-        InitialiseMecanum();
-        InitialiseArm();
+    public void runOpMode() {
+        initialiseMecanum();
+        initialiseArm();
 
         waitForStart();
 
-        while(opModeIsActive()) {
-            TeleOpDrive();
+        while (opModeIsActive()) {
+            teleOpDrive();
 
         }
     }
