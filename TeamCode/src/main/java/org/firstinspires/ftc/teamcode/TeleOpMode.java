@@ -7,23 +7,14 @@ public class TeleOpMode extends Useful_Funtions {
 
     @Override
     public void runOpMode(){
-        InitialiseComponents();
+        InitialiseMecanum();
+        InitialiseArm();
 
         waitForStart();
 
         while(opModeIsActive()) {
             TeleOpDrive();
 
-            if(gamepad1.y){
-                linearSlideMotor.setPower(1);
-            }
-            else linearSlideMotor.setPower(0);
-
-
-            if(gamepad1.a){
-                linearSlideMotor.setPower(-1);
-            }
-            else linearSlideMotor.setPower(0);
         }
     }
 }
