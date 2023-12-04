@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
@@ -14,6 +15,12 @@ public class MovementFunctions extends LinearOpMode {
     public DcMotor linearSlideMotor, circularMovementMotor;
 
     public IMU imu;
+
+
+    //HashMap<String, Double> ArmValues = new HashMap<>();
+
+    public static double ticks_rev_223 = 751.8;
+    public static double diameter_mm_cable_pulley = 30.0;//trebuie masurat diametrul mosorului
 
     public void initialiseMecanum() {
 
@@ -54,6 +61,11 @@ public class MovementFunctions extends LinearOpMode {
         circularMovementMotor.setTargetPosition(0);
         circularMovementMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        //ArmValues.put("upper_level", 800.0);
+        //ArmValues.put("middle_level", 600.0);
+        //ArmValues.put("low_level", 400.0);
+        //ArmValues.put("ground_level", 0.0);//pozitie de luat pixeli
     }
 
     public void teleOpDrive() {
@@ -123,6 +135,22 @@ public class MovementFunctions extends LinearOpMode {
         backLeft.setPower(motorValues.bl);
         backRight.setPower(motorValues.br);
     }
+
+
+    public int mm_to_ticks(double mm, double ticks_revolution, double diameter, double gear_ratio) {
+        return (int) (((ticks_revolution * mm) / (diameter * Math.PI)) * gear_ratio);
+    }
+
+
+
+    public void armMovement(double speed, double position){
+
+        int targetTicks = mm_to_ticks(position, ticks_rev_223, diameter_mm_cable_pulley, 1);//the gear ration may be wrong, check the used gears
+        linearSlideMotor.setTargetPosition(targetTicks);
+        linearSlideMotor.setPower(speed);
+        linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
 
     @Override
     public void runOpMode() throws InterruptedException {
