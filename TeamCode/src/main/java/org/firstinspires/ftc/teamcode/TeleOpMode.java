@@ -27,9 +27,6 @@ public class TeleOpMode extends MovementFunctions {
                 armMovement(1, target_position);
             }
 
-            if(gamepad1.dpad_down){
-                //...
-            }
 
         }
     }
