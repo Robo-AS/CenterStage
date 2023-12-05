@@ -20,6 +20,9 @@ public class MovementFunctions extends LinearOpMode {
     //HashMap<String, Double> ArmValues = new HashMap<>();
 
     public static double ticks_rev_223 = 751.8;
+    public static double gear_ratio = 1;                  //the gear ration may be wrong, check the used gears
+    public static double counts_per_gear_rev = ticks_rev_223 * gear_ratio;
+    public static double counts_per_degree = counts_per_gear_rev/360;
     public static double diameter_mm_cable_pulley = 30.0;//trebuie masurat diametrul mosorului
 
     public void initialiseMecanum() {
@@ -143,12 +146,19 @@ public class MovementFunctions extends LinearOpMode {
 
 
 
-    public void armMovement(double speed, double position){
+    public void armLinearMovement(double power, double position){
 
-        int targetTicks = mm_to_ticks(position, ticks_rev_223, diameter_mm_cable_pulley, 1);//the gear ration may be wrong, check the used gears
+        int targetTicks = mm_to_ticks(position, ticks_rev_223, diameter_mm_cable_pulley, gear_ratio);
         linearSlideMotor.setTargetPosition(targetTicks);
-        linearSlideMotor.setPower(speed);
+        linearSlideMotor.setPower(power);
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    public void armCircularMovement(double power, double degrees){
+        int armPosition = (int)(counts_per_degree * degrees);
+        circularMovementMotor.setTargetPosition(armPosition);
+        circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        circularMovementMotor.setPower(power);
     }
 
 
