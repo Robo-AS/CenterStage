@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-public class AutonoumousFunctions extends MovementFunctions {
+public class AutonomousFunctions extends MovementFunctions {
 
     /* 
      *  Method to perform a relative move, based on encoder counts.
@@ -26,16 +26,16 @@ public class AutonoumousFunctions extends MovementFunctions {
 
     public void encoderDrive(double x, double y) {
 
-        targetFrontLeft = frontLeft.getCurrentPosition() 
+        int targetFrontLeft = frontLeft.getCurrentPosition()
                         + (int)(x * COUNTS_PER_CM)
                         + (int)(y * COUNTS_PER_CM);
-        targetFrontRight = frontRight.getCurrentPosition() 
+        int targetFrontRight = frontRight.getCurrentPosition()
                         - (int)(x * COUNTS_PER_CM)
                         - (int)(y * COUNTS_PER_CM);
-        targetBackLeft = backLeft.getCurrentPosition()
+        int targetBackLeft = backLeft.getCurrentPosition()
                         - (int)(x * COUNTS_PER_CM)
                         + (int)(y * COUNTS_PER_CM);
-        targetBackRight = backRight.getCurrentPosition()
+        int targetBackRight = backRight.getCurrentPosition()
                         + (int)(x * COUNTS_PER_CM)
                         - (int)(y * COUNTS_PER_CM);      
         
@@ -46,7 +46,7 @@ public class AutonoumousFunctions extends MovementFunctions {
         backRight.setTargetPosition(targetBackRight);
         switchMotorModes(DcMotor.RunMode.RUN_TO_POSITION);
         
-        MotorValues = new MotorValues(DRIVE_SPEED)
+        MotorValues motorValues = new MotorValues(DRIVE_SPEED);
 
         applyMotorValues(motorValues);
 
@@ -62,7 +62,7 @@ public class AutonoumousFunctions extends MovementFunctions {
 
     public void encoderTurn(double degrees) {
 
-        applyMotorValues(new MotorValues(0))
+        applyMotorValues(new MotorValues(0));
         switchMotorModes(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         

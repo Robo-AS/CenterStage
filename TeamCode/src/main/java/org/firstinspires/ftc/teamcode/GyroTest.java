@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp(name = "TeleOpMode", group = "Linear OpMode")
+@TeleOp(name = "GyroTest", group = "Linear OpMode")
 public class GyroTest extends LinearOpMode {
     @Override
 
@@ -22,7 +23,7 @@ public class GyroTest extends LinearOpMode {
 
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
-        imu.initialize(new IMU.parameters(orientationOnRobot));
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
 
         waitForStart();
 

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -41,7 +42,7 @@ public class MovementFunctions extends LinearOpMode {
 
         RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(logoDirection, usbDirection);
 
-        imu.initialize(new IMU.parameters(orientation));
+        imu.initialize(new IMU.Parameters(orientation));
     }
 
     public void initialiseArm() {
@@ -86,7 +87,7 @@ public class MovementFunctions extends LinearOpMode {
         double y = gamepad1.left_stick_y;
         double rotation = gamepad1.right_stick_x;
 
-        double angle = imu.getRobotYawPitchRoll().getYaw(AngleUnit.DEGREES);
+        double angle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
         double newX = x * Math.cos(angle) - y * Math.sin(angle);
         double newY = x * Math.sin(angle) + y * Math.cos(angle);
