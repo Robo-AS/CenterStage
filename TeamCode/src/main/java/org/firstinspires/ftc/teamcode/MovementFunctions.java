@@ -120,24 +120,24 @@ public class MovementFunctions extends LinearOpMode {
     }
 
     public void teleOpDriveRelative() {
-
         switchMotorModes(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        double x = gamepad1.left_stick_x;
-        double y = gamepad1.left_stick_y;
-        double rotation = gamepad1.right_stick_x;
+        double x = gamepad1.left_stick_x*1.1;
+        double y = -gamepad1.left_stick_y;
+        double rx = gamepad1.right_stick_x;
 
         double angle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
         double newX = x * Math.cos(angle) - y * Math.sin(angle);
         double newY = x * Math.sin(angle) + y * Math.cos(angle);
 
-        double powerFrontLeft = newX + newY - rotation;
-        double powerFrontRight = -newX - newY - rotation;
-        double powerBackLeft = -newX + newY - rotation;
-        double powerBackRight = newX - newY - rotation;
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double frontLeftPower = (y + x + rx) / denominator;
+        double frontRightPower = ( -y + x + rx) / denominator;
+        double backLeftPower = ( -y + x - rx) / denominator;
+        double backRightPower = ( y + x - rx) / denominator;
 
-        MotorValues motorValues = new MotorValues(powerFrontLeft, powerFrontRight, powerBackLeft, powerBackRight);
+        MotorValues motorValues= new MotorValues(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 
         if (gamepad1.left_bumper)
             motorValues.slowMode();
