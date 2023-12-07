@@ -3,9 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
@@ -14,6 +15,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 public class MovementFunctions extends LinearOpMode {
     public DcMotor frontRight, frontLeft, backRight, backLeft;
     public DcMotor linearSlideMotor, circularMovementMotor;
+    public Servo servoLeftClaw;
+    public Servo servoRightClaw;
+    public Servo servoClawAngle;
+
+    public boolean isClawOpen=true;
 
     public IMU imu;
 
@@ -62,29 +68,43 @@ public class MovementFunctions extends LinearOpMode {
         linearSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         circularMovementMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        circularMovementMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         circularMovementMotor.setTargetPosition(0);
         circularMovementMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        //ArmValues.put("upper_level", 800.0);
-        //ArmValues.put("middle_level", 600.0);
-        //ArmValues.put("low_level", 400.0);
-        //ArmValues.put("ground_level", 0.0);//pozitie de luat pixeli
+        servoLeftClaw = hardwareMap.get(Servo.class, "servoLeftClaw");
+        servoRightClaw = hardwareMap.get(Servo.class, "servoRightClaw");
+        servoClawAngle = hardwareMap.get(Servo.class, "servoClawAngle");
+
+        servoLeftClaw.setPosition(0);
+        servoRightClaw.setPosition(0);
+        servoClawAngle.setPosition(0);
+    }
+
+    public void setClawOpen{
+
+        servoLeftClaw.setPosition(0);
+
+
+
     }
 
     public void teleOpDrive() {
 
         switchMotorModes(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        double x = gamepad1.left_stick_x;
-        double y = gamepad1.left_stick_y;
-        double rotation = gamepad1.right_stick_x;
 
-        double powerFrontLeft = x + y - rotation;
-        double powerFrontRight = -x - y - rotation;
-        double powerBackLeft = -x + y - rotation;
-        double powerBackRight = x - y - rotation;
+        double y = -gamepad1.left_stick_y;
+        double x = gamepad1.left_stick_x*1.1;
+        double rx = gamepad1.right_stick_x;
 
-        MotorValues motorValues = new MotorValues(powerFrontLeft, powerFrontRight, powerBackLeft, powerBackRight);
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double frontLeftPower = (y + x + rx) / denominator;
+        double frontRightPower = ( -y + x + rx) / denominator;
+        double backLeftPower = ( -y + x - rx) / denominator;
+        double backRightPower = ( y + x - rx) / denominator;
+
+        MotorValues motorValues= new MotorValues(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 
         if (gamepad1.left_bumper)
             motorValues.slowMode();

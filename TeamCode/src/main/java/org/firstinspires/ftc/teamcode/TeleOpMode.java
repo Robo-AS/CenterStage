@@ -9,8 +9,13 @@ import java.util.List;
 
 @TeleOp(name = "TeleOpMode", group = "Linear OpMode")
 public class TeleOpMode extends MovementFunctions {
-    List<Double> listOfArmPositions = Arrays.asList(0.0, 400.0, 600.0, 800.0);
-    List<Double> listOfArmAngles = Arrays.asList(0.0, 30.0, 45.0, 80.0);
+
+    enum modes{
+        MOVE,
+        PLACE
+    }
+
+    modes mode = modes.MOVE;
 
     @Override
     public void runOpMode() {
@@ -20,27 +25,16 @@ public class TeleOpMode extends MovementFunctions {
         waitForStart();
 
         while (opModeIsActive()) {
-            teleOpDriveRelative();
 
-            if (gamepad1.dpad_up && linearSlideMotor.getCurrentPosition() != listOfArmPositions.get(3)) {
-                double current_position = linearSlideMotor.getCurrentPosition();
-                int target_position_index = listOfArmPositions.indexOf(current_position) + 1;
-                double target_position = listOfArmPositions.get(target_position_index);
-                double target_angle = listOfArmAngles.get(target_position_index);
+            if(mode==modes.MOVE){
+                teleOpDrive();
 
-                armLinearMovement(0.5, target_position);
-                armCircularMovement(0.5, target_angle);
+            }else if(mode==modes.PLACE){
+
             }
 
-
-            if (gamepad1.dpad_down && linearSlideMotor.getCurrentPosition() != listOfArmPositions.get(0)) {
-                double current_position = linearSlideMotor.getCurrentPosition();
-                int target_position_index = listOfArmPositions.indexOf(current_position) - 1;
-                double target_position = listOfArmPositions.get(target_position_index);
-                double target_angle = listOfArmAngles.get(target_position_index);
-
-                armLinearMovement(0.5, target_position);
-                armCircularMovement(-0.5, target_angle);
+            if(gamepad1.x){
+                mode = mode==modes.MOVE ? modes.PLACE : modes.MOVE;
             }
         }
     }
