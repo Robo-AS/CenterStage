@@ -80,14 +80,19 @@ public class MovementFunctions extends LinearOpMode {
         servoLeftClaw.setPosition(0);
         servoRightClaw.setPosition(0);
         servoClawAngle.setPosition(0);
+
+        servoRightClaw.setDirection(Servo.Direction.REVERSE);
     }
 
-    public void setClawOpen{
-
-        servoLeftClaw.setPosition(0);
-
-
-
+    public void setClaw(boolean open){
+        if(open) {
+            servoLeftClaw.setPosition(0);
+            servoRightClaw.setPosition(0);
+        }
+        else{
+            servoLeftClaw.setPosition(0.073);
+            servoRightClaw.setPosition(0.073);
+        }
     }
 
     public void teleOpDrive() {
