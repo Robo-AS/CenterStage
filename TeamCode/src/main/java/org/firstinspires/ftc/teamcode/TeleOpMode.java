@@ -20,7 +20,7 @@ public class TeleOpMode extends MovementFunctions {
         waitForStart();
 
         while (opModeIsActive()) {
-            teleOpDrive();
+            teleOpDriveRelative();
 
             if (gamepad1.dpad_up && linearSlideMotor.getCurrentPosition() != listOfArmPositions.get(3)) {
                 double current_position = linearSlideMotor.getCurrentPosition();
