@@ -56,7 +56,6 @@ public class TeleOpMode extends MovementFunctions {
                 if(openRight.status==Toggler.STATUS.JUST_PRESSED){
                     openRightClaw=!openRightClaw;
                 }
-
                 if(openRightClaw){
                     servoRightClaw.setPosition(0);
                 }else{
@@ -67,13 +66,9 @@ public class TeleOpMode extends MovementFunctions {
                 }else{
                     servoLeftClaw.setPosition(0.073);
                 }
-
-
-
             }else if(mode==modes.ENTER_PLACE){
-
                 telemetry.addLine("Enter Place Mode");
-                mode=modes.ENTER_PLACE;
+                mode=modes.PLACE;
             }
             else if(mode==modes.PLACE){
 
@@ -123,15 +118,15 @@ public class TeleOpMode extends MovementFunctions {
                 }
             }
 
-            telemetry.addData("arm pos target", circularMovementMotor.getTargetPosition());
-            telemetry.addData("arm pos", circularMovementMotor.getCurrentPosition());
-            telemetry.addData("servo_angle", servoClawAngle.getPosition());
-            telemetry.addData("servo_right", servoRightClaw.getPosition());
-            telemetry.addData("servo_left", servoLeftClaw.getPosition());
+            telemetry.addData("linearSlideMotor", linearSlideMotor.getTargetPosition());
+            telemetry.addData("circularMovementMotor", circularMovementMotor.getCurrentPosition());
+            telemetry.addData("ServoClawAngle", servoClawAngle.getPosition());
+            //telemetry.addData("servo_right", servoRightClaw.getPosition());
+            //telemetry.addData("servo_left", servoLeftClaw.getPosition());
 
-            telemetry.addData("openLeftClaw", openLeftClaw);
+            //telemetry.addData("openLeftClaw", openLeftClaw);
 
-            telemetry.addData("openRightClaw", openRightClaw);
+            //telemetry.addData("openRightClaw", openRightClaw);
 
             telemetry.addData("arm_position_index", arm_position_index);
 

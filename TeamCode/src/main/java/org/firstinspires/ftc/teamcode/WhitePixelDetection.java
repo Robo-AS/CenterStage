@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -51,7 +50,7 @@ import java.util.List;
 
 
 @TeleOp(name = "Concept: TensorFlow Object Detection Easy", group = "Concept")
-public class ObjectDetection extends LinearOpMode {
+public class WhitePixelDetection extends LinearOpMode {
 
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
