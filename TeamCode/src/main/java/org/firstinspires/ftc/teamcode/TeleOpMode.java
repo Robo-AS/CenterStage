@@ -22,7 +22,9 @@ public class TeleOpMode extends MovementFunctions {
     enum modes{
         MOVE,
         ENTER_PLACE,
-        PLACE
+        PLACE,
+
+        AVION,
     }
 
 
@@ -73,30 +75,16 @@ public class TeleOpMode extends MovementFunctions {
 
                 if(gamepadUp.status == Toggler.STATUS.JUST_PRESSED){
                     arm_position_index=Math.min(3, arm_position_index+1);
-                    double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
-                    double targetAngle = listOfArmAngles.get(arm_position_index);
-
-                    //armLinearMovement(0.2, targetLinearSlidePosition);
-                    armCircularMovement( 0.2, targetAngle);
-                    //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                 }
 
                 if(gamepadDown.status == Toggler.STATUS.JUST_PRESSED){
                     arm_position_index=Math.max(0, arm_position_index-1);
-
-                    double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
-                    double targetAngle = listOfArmAngles.get(arm_position_index);
-
-                    //armLinearMovement(0.2, targetLinearSlidePosition);
-                    armCircularMovement(-0.2, targetAngle);
-                    //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                 }
 
-
-
-
+                armLinearMovement(0.2, listOfLinearSlidePositions.get(arm_position_index));
+                armCircularMovement( 0.2, listOfArmAngles.get(arm_position_index));
+                servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
             }
-
 
             openLeft.update(gamepad2.x);
             openRight.update(gamepad2.b);

@@ -141,6 +141,9 @@ public class MovementFunctions extends LinearOpMode {
         double newX = x * Math.cos(angle) - y * Math.sin(angle);
         double newY = x * Math.sin(angle) + y * Math.cos(angle);
 
+        x=newX;
+        y=newY;
+
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         double frontLeftPower = (y + x + rx) / denominator;
         double frontRightPower = ( -y + x + rx) / denominator;
