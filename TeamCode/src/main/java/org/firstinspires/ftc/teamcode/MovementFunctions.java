@@ -7,12 +7,23 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MovementFunctions extends LinearOpMode {
     public DcMotor frontRight, frontLeft, backRight, backLeft;
@@ -21,11 +32,12 @@ public class MovementFunctions extends LinearOpMode {
     public Servo servoRightClaw;
     public Servo servoClawAngle;
 
-
-
+    VisionPortal visionPortal;
+    AprilTagProcessor aprilTag;
+    AprilTagProcessor.Builder aprilTagBuilder;
     public IMU imu;
 
-
+    public List<AprilTagDetection> aprilTagDetections;
     //HashMap<String, Double> ArmValues = new HashMap<>();
 
     public static double ticks_rev_223 = 751.8;
@@ -33,6 +45,50 @@ public class MovementFunctions extends LinearOpMode {
     public static double counts_per_gear_rev = ticks_rev_223 * gear_ratio;
     public static double counts_per_degree = counts_per_gear_rev/360;
     public static double diameter_mm_cable_pulley = 42.5;//trebuie masurat diametrul mosorului
+
+    public void initAprilTag() {
+
+        // Create the AprilTag processor by using a builder.
+
+        aprilTagBuilder = new AprilTagProcessor.Builder()
+                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
+                .setDrawTagID(true)
+                .setDrawTagOutline(true)
+                .setDrawAxes(true)
+                .setDrawCubeProjection(true);
+
+        aprilTag = aprilTagBuilder.build();
+
+        // Adjust Image Decimation to trade-off detection-range for detection-rate.
+        // eg: Some typical detection data using a Logitech C920 WebCam
+        // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
+        // Decimation = 2 ..  Detect 2" Tag from 6  feet away at 22 Frames per second
+        // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second
+        // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second
+        // Note: Decimation can be changed on-the-fly to adapt during a match.
+        aprilTag.setDecimation(2);
+
+        // Create the vision portal by using a builder.
+        visionPortal = new VisionPortal.Builder()
+                    .setCamera(hardwareMap.get(WebcamName.class, "Webcam"))
+                    .addProcessor(aprilTag)
+                    .build();
+    }
+
+    public void getDetections(){
+        aprilTagDetections = aprilTag.getDetections();
+        AprilTagDetection aprilTagDetection;
+
+        int aprilTagId;
+
+        for(aprilTagDetection : aprilTagDetections){
+            if(aprilTagDetection.metadata != null){
+
+                telemetry.addData(aprilTagDetection.metadata.name, aprilTagDetection.ftcPose.yaw);
+            }
+        }
+
+    }
 
 
     public void initialiseMecanum() {
