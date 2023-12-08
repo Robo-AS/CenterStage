@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-public class Toggler
-{
+public class Toggler {
 
     public enum STATUS{
         NOT_PRESSED,

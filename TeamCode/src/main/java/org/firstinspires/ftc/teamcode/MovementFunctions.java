@@ -34,8 +34,6 @@ public class MovementFunctions extends LinearOpMode {
     public static double counts_per_degree = counts_per_gear_rev/360;
     public static double diameter_mm_cable_pulley = 42.5;//trebuie masurat diametrul mosorului
 
-    ArrayList<Boolean> booleanArray = new ArrayList<Boolean>();
-    int booleanIncrementer = 0;
 
     public void initialiseMecanum() {
 
@@ -78,15 +76,19 @@ public class MovementFunctions extends LinearOpMode {
         circularMovementMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+
+
         servoLeftClaw = hardwareMap.get(Servo.class, "servoLeftClaw");
         servoRightClaw = hardwareMap.get(Servo.class, "servoRightClaw");
         servoClawAngle = hardwareMap.get(Servo.class, "servoClawAngle");
+
+        servoRightClaw.setDirection(Servo.Direction.REVERSE);
 
         servoLeftClaw.setPosition(0);
         servoRightClaw.setPosition(0);
         servoClawAngle.setPosition(0);
 
-        servoRightClaw.setDirection(Servo.Direction.REVERSE);
+
     }
 
     public void setClawLeft(boolean open){

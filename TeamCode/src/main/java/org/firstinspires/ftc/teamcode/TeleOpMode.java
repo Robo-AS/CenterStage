@@ -12,6 +12,8 @@ public class TeleOpMode extends MovementFunctions {
     List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 50.0, 100.0, 150.0);
     List<Double> listOfArmAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
 
+    List<Double> listOfClawAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
+
     private int arm_position_index = 0;
 
     private boolean openLeftClaw = false;
@@ -65,27 +67,34 @@ public class TeleOpMode extends MovementFunctions {
                 }
 
 
+
             }else if(mode==modes.PLACE){
 
 
                 if(gamepadUp.status == Toggler.STATUS.JUST_PRESSED){
                     arm_position_index=Math.min(3, arm_position_index+1);
+                    double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
+                    double targetAngle = listOfArmAngles.get(arm_position_index);
+
+                    //armLinearMovement(0.2, targetLinearSlidePosition);
+                    armCircularMovement( 0.2, targetAngle);
+                    //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                 }
 
                 if(gamepadDown.status == Toggler.STATUS.JUST_PRESSED){
                     arm_position_index=Math.max(0, arm_position_index-1);
+
+                    double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
+                    double targetAngle = listOfArmAngles.get(arm_position_index);
+
+                    //armLinearMovement(0.2, targetLinearSlidePosition);
+                    armCircularMovement(-0.2, targetAngle);
+                    //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                 }
 
-                double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
-                double targetAngle = listOfArmAngles.get(arm_position_index);
-
-                //armLinearMovement(0.2, targetLinearSlidePosition);
-                armCircularMovement(-0.2, targetAngle);
 
 
-                telemetry.addData("arm pos target", circularMovementMotor.getTargetPosition());
 
-                telemetry.addData("arm pos", circularMovementMotor.getCurrentPosition());
             }
 
 
@@ -105,6 +114,16 @@ public class TeleOpMode extends MovementFunctions {
                     mode=modes.MOVE;
                 }
             }
+
+            telemetry.addData("arm pos target", circularMovementMotor.getTargetPosition());
+            telemetry.addData("arm pos", circularMovementMotor.getCurrentPosition());
+            telemetry.addData("servo_angle", servoClawAngle.getPosition());
+            telemetry.addData("servo_right", servoRightClaw.getPosition());
+            telemetry.addData("servo_left", servoLeftClaw.getPosition());
+
+            telemetry.addData("stuff", openLeftClaw);
+
+            telemetry.addData("stuff", openRightClaw);
 
             telemetry.update();
         }
