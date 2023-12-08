@@ -46,9 +46,7 @@ public class MovementFunctions extends LinearOpMode {
     public static double counts_per_degree = counts_per_gear_rev/360;
     public static double diameter_mm_cable_pulley = 42.5;//trebuie masurat diametrul mosorului
 
-    private void initAprilTag() {
-
-
+    public void initAprilTag() {
 
         // Create the AprilTag processor by using a builder.
 

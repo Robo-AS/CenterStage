@@ -42,10 +42,12 @@ public class TeleOpMode extends MovementFunctions {
     public void runOpMode() {
         initialiseMecanum();
         initialiseArm();
+        initAprilTag();
 
         waitForStart();
 
         while (opModeIsActive()) {
+            getDetections();
             if(mode==modes.MOVE){
                 telemetry.addLine("Move Mode");
                 teleOpDriveRelative();
