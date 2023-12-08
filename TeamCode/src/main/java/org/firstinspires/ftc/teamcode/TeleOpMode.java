@@ -3,12 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import org.checkerframework.checker.units.qual.A;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
 
 import java.util.Arrays;
 import java.util.List;
 
 @TeleOp(name = "TeleOpMode", group = "Linear OpMode")
-public class TeleOpMode extends MovementFunctions {
+public class TeleOpMode extends AutonomousFunctions {
     List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 50.0, 100.0, 150.0);
     List<Double> listOfArmAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
 
@@ -19,16 +20,19 @@ public class TeleOpMode extends MovementFunctions {
     private boolean openLeftClaw = false;
     private boolean openRightClaw = false;
 
-    enum modes{
+    private int needid=2;
+
+    enum MODES{
         MOVE,
         ENTER_PLACE,
         PLACE,
 
+        ENTER_MOVE,
         AVION,
     }
 
 
-    modes mode = modes.MOVE;
+    MODES mode = MODES.MOVE;
 
     Toggler switchModes=new Toggler();
     Toggler openLeft= new Toggler();
@@ -44,13 +48,18 @@ public class TeleOpMode extends MovementFunctions {
         initialiseArm();
         initAprilTag();
 
+        //TestMecanum();
+
+
         waitForStart();
+
 
         while (opModeIsActive()) {
             getDetections();
-            if(mode==modes.MOVE){
+            if(mode==MODES.MOVE){
                 telemetry.addLine("Move Mode");
-                teleOpDriveRelative();
+
+                teleOpDrive();
 
                 if(openLeft.status==Toggler.STATUS.JUST_PRESSED){
                     openLeftClaw=!openLeftClaw;
@@ -68,11 +77,33 @@ public class TeleOpMode extends MovementFunctions {
                 }else{
                     servoLeftClaw.setPosition(0.073);
                 }
-            }else if(mode==modes.ENTER_PLACE){
+            }else if(mode==MODES.ENTER_PLACE){
                 telemetry.addLine("Enter Place Mode");
-                mode=modes.PLACE;
+
+                List<AprilTagDetection> detections = getDetections();
+                AprilTagDetection good;
+
+                boolean found=false;
+                for(AprilTagDetection detection : detections){
+                    if(detection.metadata.id==needid){
+                        good = detection;
+                        found=true;
+                        break;
+                    }
+                }
+
+                if(found==false){
+                    telemetry.addLine("NO APRIL TAG YOU DUMB FUCK");
+                    mode=MODES.MOVE;
+                    break;
+                }
+
+                //alignToActualDetection(good);
+
+
+                mode=MODES.PLACE;
             }
-            else if(mode==modes.PLACE){
+            else if(mode==MODES.PLACE){
 
 
                 telemetry.addLine("Place Mode");
@@ -87,8 +118,11 @@ public class TeleOpMode extends MovementFunctions {
                 armLinearMovement(0.2, listOfLinearSlidePositions.get(arm_position_index));
                 armCircularMovement( 0.2, listOfArmAngles.get(arm_position_index));
                 servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
-
-
+            }
+            else if(mode==MODES.ENTER_MOVE){
+                //aici reseteaza chestii cand intram in move
+                telemetry.addLine("Enter Move Mode");
+                mode=MODES.MOVE;
             }
 
 
@@ -100,12 +134,10 @@ public class TeleOpMode extends MovementFunctions {
 
 
             if(switchModes.status == Toggler.STATUS.JUST_PRESSED){
-                if(mode==modes.MOVE){
-                    mode = modes.ENTER_PLACE;
-                }else if(mode==modes.ENTER_PLACE){
-                    mode=modes.PLACE;
-                }else {
-                    mode=modes.MOVE;
+                if(mode==MODES.MOVE){
+                    mode = MODES.ENTER_PLACE;
+                }if(mode==MODES.PLACE) {
+                    mode=MODES.ENTER_MOVE;
                 }
             }
 

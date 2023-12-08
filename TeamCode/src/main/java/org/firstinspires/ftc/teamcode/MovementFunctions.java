@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -23,6 +24,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MovementFunctions extends LinearOpMode {
@@ -75,21 +77,16 @@ public class MovementFunctions extends LinearOpMode {
                     .build();
     }
 
-    public void getDetections(){
+    public List<AprilTagDetection> getDetections(){
         aprilTagDetections = aprilTag.getDetections();
-        AprilTagDetection aprilTagDetection;
-
-        int aprilTagId;
-
-        for(aprilTagDetection : aprilTagDetections){
-            if(aprilTagDetection.metadata != null){
-
-                telemetry.addData(aprilTagDetection.metadata.name, aprilTagDetection.ftcPose.yaw);
-            }
-        }
-
+        return aprilTagDetections;
     }
 
+
+    public void TestMecanum(){
+        MotorValues motorValues = new MotorValues(0.5);
+        applyMotorValues(motorValues);
+    }
 
     public void initialiseMecanum() {
 
@@ -109,6 +106,9 @@ public class MovementFunctions extends LinearOpMode {
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         imu = hardwareMap.get(IMU.class, "imu");
 
@@ -168,12 +168,20 @@ public class MovementFunctions extends LinearOpMode {
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x*1.1;
         double rx = gamepad1.right_stick_x;
+        telemetry.addData("y",y);
+        telemetry.addData("x",x);
+        telemetry.addData("rx",rx);
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = (y + x + rx) / denominator;
-        double frontRightPower = ( -y + x + rx) / denominator;
-        double backLeftPower = ( -y + x - rx) / denominator;
-        double backRightPower = ( y + x - rx) / denominator;
+        double frontLeftPower = (y-x-rx) / denominator;
+        double frontRightPower = (y+x+rx) / denominator;
+        double backLeftPower = (y+x-rx) / denominator;
+        double backRightPower = (y-x+rx) / denominator;
+
+        telemetry.addData("fl", frontLeftPower);
+        telemetry.addData("fr", frontRightPower);
+        telemetry.addData("bl", backLeftPower);
+        telemetry.addData("br", backRightPower);
 
         MotorValues motorValues= new MotorValues(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 
