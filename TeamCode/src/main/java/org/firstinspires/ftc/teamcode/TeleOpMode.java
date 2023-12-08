@@ -12,10 +12,6 @@ public class TeleOpMode extends MovementFunctions {
     List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 50.0, 100.0, 150.0);
     List<Double> listOfArmAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
 
-
-    private boolean dpadUpPreviousState = false;
-    private boolean dpadDownPreviousState = false;
-
     private int arm_position_index = 0;
 
     private boolean openLeftClaw = false;
@@ -23,13 +19,12 @@ public class TeleOpMode extends MovementFunctions {
 
     enum modes{
         MOVE,
+        ENTER_PLACE,
         PLACE
     }
 
 
     modes mode = modes.MOVE;
-    private double servos_initial_position =0.0;
-
 
     Toggler switchModes=new Toggler();
     Toggler openLeft= new Toggler();
@@ -58,6 +53,16 @@ public class TeleOpMode extends MovementFunctions {
                     openRightClaw=!openRightClaw;
                 }
 
+                if(openRightClaw){
+                    servoRightClaw.setPosition(0);
+                }else{
+                    servoRightClaw.setPosition(0.073);
+                }
+                if(openLeftClaw){
+                    servoLeftClaw.setPosition(0);
+                }else{
+                    servoLeftClaw.setPosition(0.073);
+                }
 
 
             }else if(mode==modes.PLACE){
@@ -93,8 +98,10 @@ public class TeleOpMode extends MovementFunctions {
 
             if(switchModes.status == Toggler.STATUS.JUST_PRESSED){
                 if(mode==modes.MOVE){
-                    mode = modes.PLACE;
-                }else{
+                    mode = modes.ENTER_PLACE;
+                }else if(mode==modes.ENTER_PLACE){
+                    mode=modes.PLACE;
+                }else {
                     mode=modes.MOVE;
                 }
             }
