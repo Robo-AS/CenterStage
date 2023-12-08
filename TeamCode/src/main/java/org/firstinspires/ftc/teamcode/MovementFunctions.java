@@ -189,7 +189,7 @@ public class MovementFunctions extends LinearOpMode {
     }
 
     public void armCircularMovement(double power, double degrees){
-        int armPosition = (int)(counts_per_degree * degrees);
+        int armPosition = (int)degrees;
         circularMovementMotor.setTargetPosition(armPosition);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         circularMovementMotor.setPower(power);

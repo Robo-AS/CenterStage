@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
+import org.checkerframework.checker.units.qual.A;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,9 +21,22 @@ public class TeleOpMode extends MovementFunctions {
     private boolean openLeftClaw = false;
     private boolean openRightClaw = false;
 
+    enum modes{
+        MOVE,
+        PLACE
+    }
+
+
+    modes mode = modes.MOVE;
     private double servos_initial_position =0.0;
 
 
+    Toggler switchModes=new Toggler();
+    Toggler openLeft= new Toggler();
+    Toggler openRight = new Toggler();
+
+    Toggler gamepadUp = new Toggler();
+    Toggler gamepadDown = new Toggler();
 
 
     @Override
@@ -33,121 +47,59 @@ public class TeleOpMode extends MovementFunctions {
         waitForStart();
 
         while (opModeIsActive()) {
+            if(mode==modes.MOVE){
+                telemetry.addLine("Move Mode");
+                teleOpDriveRelative();
 
-            teleOpDriveRelative();
-
-//            boolean dpad_up = gamepad1.dpad_up;
-//            boolean dpad_down = gamepad1.dpad_down;
-
-//            boolean dpad_up_pressed = ifPressed(dpad_up);
-//            boolean dpad_down_pressed = ifPressed(dpad_down);
-
-
-//            if(gamepad1.dpad_up  && arm_position_index!=3){
-//                arm_position_index = arm_position_index +1;
-//                double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
-//                double targetAngle = listOfArmAngles.get(arm_position_index);
-//
-//                //armLinearMovement(0.2, targetLinearSlidePosition);
-//                armCircularMovement( 0.2, targetAngle);
-//
-//            }
-
-//            if(gamepad1.dpad_down && arm_position_index!=0){
-//                arm_position_index = arm_position_index -1;
-//                double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
-//                double targetAngle = listOfArmAngles.get(arm_position_index);
-//
-//                //armLinearMovement(0.2, targetLinearSlidePosition);
-//                armCircularMovement(-0.2, targetAngle);
-//            }
+                if(openLeft.status==Toggler.STATUS.JUST_PRESSED){
+                    openLeftClaw=!openLeftClaw;
+                }
+                if(openRight.status==Toggler.STATUS.JUST_PRESSED){
+                    openRightClaw=!openRightClaw;
+                }
 
 
 
+            }else if(mode==modes.PLACE){
 
-            if (!gamepad1.dpad_up && dpadUpPreviousState && arm_position_index!=3) {
-                dpadUpPreviousState = false;
-                arm_position_index = arm_position_index +1;
+
+                if(gamepadUp.status == Toggler.STATUS.JUST_PRESSED){
+                    arm_position_index=Math.min(3, arm_position_index+1);
+                }
+
+                if(gamepadDown.status == Toggler.STATUS.JUST_PRESSED){
+                    arm_position_index=Math.max(0, arm_position_index-1);
+                }
+
                 double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
                 double targetAngle = listOfArmAngles.get(arm_position_index);
 
                 //armLinearMovement(0.2, targetLinearSlidePosition);
                 armCircularMovement(-0.2, targetAngle);
+
+
+                telemetry.addData("arm pos target", circularMovementMotor.getTargetPosition());
+
+                telemetry.addData("arm pos", circularMovementMotor.getCurrentPosition());
             }
-            if (gamepad1.dpad_up) dpadUpPreviousState = true;
-
-            telemetry.addData("dpad_up:", dpadUpPreviousState);
 
 
+            openLeft.update(gamepad2.x);
+            openRight.update(gamepad2.b);
+            switchModes.update(gamepad1.x);
+            gamepadUp.update(gamepad1.dpad_up);
+            gamepadDown.update(gamepad1.dpad_down);
 
-            if(!gamepad1.dpad_down && dpadDownPreviousState && arm_position_index!=0){
-                dpadDownPreviousState = false;
-                arm_position_index = arm_position_index - 1;
-                double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
-                double targetAngle = listOfArmAngles.get(arm_position_index);
 
-                //armLinearMovement(0.2, targetLinearSlidePosition);
-                armCircularMovement(-0.2, targetAngle);
+            if(switchModes.status == Toggler.STATUS.JUST_PRESSED){
+                if(mode==modes.MOVE){
+                    mode = modes.PLACE;
+                }else{
+                    mode=modes.MOVE;
+                }
             }
-            if(gamepad1.dpad_down) dpadDownPreviousState = true;
-            telemetry.addData("dpad_down:", dpadDownPreviousState);
 
-
-            telemetry.addData("position", arm_position_index);
-            telemetry.addData("circularPosition", circularMovementMotor.getCurrentPosition());
-            telemetry.addData("linearSlidePosition", linearSlideMotor.getCurrentPosition());
             telemetry.update();
-
-
-
-            //Cleste deshis-inchis
-            if(gamepad1.x && !openLeftClaw){
-                servoLeftClaw.setPosition(0.073);//22 de grade din pozitia initiala
-                openLeftClaw = true;
-            }
-            else if(gamepad1.x && openLeftClaw){
-                servoLeftClaw.setPosition(servos_initial_position);
-                openLeftClaw = false;
-            }
-
-
-            if (gamepad1.b && !openRightClaw) {
-                servoRightClaw.setPosition(0.073);//22 de grade din pozitia initiala
-                openRightClaw = true;
-            }
-            else if(gamepad1.b && openRightClaw){
-                servoRightClaw.setPosition(servos_initial_position);
-                openRightClaw = false;
-            }
-
-
-            // booleanIncrementer = 0;
         }
-
-
-
-
-
-
     }
-
-
-
-//
-//    private boolean ifPressed(boolean button){
-//        boolean output = false;
-//        if(booleanArray.size() == booleanIncrementer){
-//            booleanArray.add(false);
-//        }
-//
-//        boolean buttonWas = booleanArray.get(booleanIncrementer);
-//
-//        if(button != buttonWas && button){
-//            output = true;
-//        }
-//
-//        booleanArray.set(booleanIncrementer, button);
-//        booleanIncrementer = booleanIncrementer + 1;
-//        return  output;
-//    }
 }
