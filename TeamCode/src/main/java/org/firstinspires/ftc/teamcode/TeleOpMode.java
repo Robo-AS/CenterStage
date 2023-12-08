@@ -11,8 +11,7 @@ public class TeleOpMode extends MovementFunctions {
     List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 50.0, 100.0, 150.0);
     List<Double> listOfArmAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
 
-    //ArrayList<Boolean> booleanArray = new ArrayList<Boolean>();
-    //int booleanIncrementer = 0;
+
     private boolean dpadUpPreviousState = false;
     private boolean dpadDownPreviousState = false;
 
@@ -66,9 +65,9 @@ public class TeleOpMode extends MovementFunctions {
 
 
 
-            if (!gamepad1.dpad_up && dpadUpPreviousState) {
+            if (!gamepad1.dpad_up && dpadUpPreviousState && arm_position_index!=3) {
                 dpadUpPreviousState = false;
-                arm_position_index = arm_position_index -1;
+                arm_position_index = arm_position_index +1;
                 double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
                 double targetAngle = listOfArmAngles.get(arm_position_index);
 
@@ -77,12 +76,13 @@ public class TeleOpMode extends MovementFunctions {
             }
             if (gamepad1.dpad_up) dpadUpPreviousState = true;
 
+            telemetry.addData("dpad_up:", dpadUpPreviousState);
 
 
 
-            if(!gamepad1.dpad_down && dpadDownPreviousState){
+            if(!gamepad1.dpad_down && dpadDownPreviousState && arm_position_index!=0){
                 dpadDownPreviousState = false;
-                arm_position_index = arm_position_index -1;
+                arm_position_index = arm_position_index - 1;
                 double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
                 double targetAngle = listOfArmAngles.get(arm_position_index);
 
@@ -90,6 +90,7 @@ public class TeleOpMode extends MovementFunctions {
                 armCircularMovement(-0.2, targetAngle);
             }
             if(gamepad1.dpad_down) dpadDownPreviousState = true;
+            telemetry.addData("dpad_down:", dpadDownPreviousState);
 
 
             telemetry.addData("position", arm_position_index);
