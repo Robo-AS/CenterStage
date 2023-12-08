@@ -1,25 +1,28 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import org.checkerframework.checker.units.qual.A;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @TeleOp(name = "TeleOpMode", group = "Linear OpMode")
 public class TeleOpMode extends MovementFunctions {
+    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 50.0, 100.0, 150.0);
+    List<Double> listOfArmAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
 
-    int[] angles = {180,210,240,270};
-    int[] distances = {0,0,0,0};
-    Gamepad lastgamepad1=new Gamepad();
-    Gamepad lastgamepad2=new Gamepad();
-    enum modes{
-        MOVE,
-        PLACE
-    }
+    //ArrayList<Boolean> booleanArray = new ArrayList<Boolean>();
+    //int booleanIncrementer = 0;
+    private boolean dpadUpPreviousState = false;
+    private boolean dpadDownPreviousState = false;
 
-    modes mode = modes.MOVE;
+    private int arm_position_index = 0;
+
+    private boolean openLeftClaw = false;
+    private boolean openRightClaw = false;
+
+    private double servos_initial_position =0.0;
+
 
 
 
@@ -32,39 +35,118 @@ public class TeleOpMode extends MovementFunctions {
 
         while (opModeIsActive()) {
 
-            if(mode==modes.MOVE){
-                telemetry.addLine("Move Mode");
-                teleOpDriveRelative();
+            teleOpDriveRelative();
 
-            }else if(mode==modes.PLACE){
-                telemetry.addLine("Place Mode");
+//            boolean dpad_up = gamepad1.dpad_up;
+//            boolean dpad_down = gamepad1.dpad_down;
 
-                boolean[] dpad = {gamepad1.dpad_up, gamepad1.dpad_right, gamepad1.dpad_down, gamepad1.dpad_left};
-
-                for(int i=0;i<4;i++){
-                    if(dpad[i]){
-                        armCircularMovement(0.1, angles[i]);
-                    }
-                }
+//            boolean dpad_up_pressed = ifPressed(dpad_up);
+//            boolean dpad_down_pressed = ifPressed(dpad_down);
 
 
+//            if(gamepad1.dpad_up  && arm_position_index!=3){
+//                arm_position_index = arm_position_index +1;
+//                double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
+//                double targetAngle = listOfArmAngles.get(arm_position_index);
+//
+//                //armLinearMovement(0.2, targetLinearSlidePosition);
+//                armCircularMovement( 0.2, targetAngle);
+//
+//            }
+
+//            if(gamepad1.dpad_down && arm_position_index!=0){
+//                arm_position_index = arm_position_index -1;
+//                double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
+//                double targetAngle = listOfArmAngles.get(arm_position_index);
+//
+//                //armLinearMovement(0.2, targetLinearSlidePosition);
+//                armCircularMovement(-0.2, targetAngle);
+//            }
+
+
+
+
+            if (!gamepad1.dpad_up && dpadUpPreviousState) {
+                dpadUpPreviousState = false;
+                arm_position_index = arm_position_index -1;
+                double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
+                double targetAngle = listOfArmAngles.get(arm_position_index);
+
+                //armLinearMovement(0.2, targetLinearSlidePosition);
+                armCircularMovement(-0.2, targetAngle);
             }
+            if (gamepad1.dpad_up) dpadUpPreviousState = true;
 
-            if(gamepad1.x && !lastgamepad1.x){
-                if(mode==modes.MOVE){
-                    mode = modes.PLACE;
-                }else{
-                    mode=modes.MOVE;
-                }
 
+
+
+            if(!gamepad1.dpad_down && dpadDownPreviousState){
+                dpadDownPreviousState = false;
+                arm_position_index = arm_position_index -1;
+                double targetLinearSlidePosition = listOfLinearSlidePositions.get(arm_position_index);
+                double targetAngle = listOfArmAngles.get(arm_position_index);
+
+                //armLinearMovement(0.2, targetLinearSlidePosition);
+                armCircularMovement(-0.2, targetAngle);
             }
-            telemetry.addData("x1",gamepad1.x);
-            telemetry.addData("x2",lastgamepad1.x);
+            if(gamepad1.dpad_down) dpadDownPreviousState = true;
 
 
-            lastgamepad2 = gamepad2;
-
+            telemetry.addData("position", arm_position_index);
+            telemetry.addData("circularPosition", circularMovementMotor.getCurrentPosition());
+            telemetry.addData("linearSlidePosition", linearSlideMotor.getCurrentPosition());
             telemetry.update();
+
+
+
+            //Cleste deshis-inchis
+            if(gamepad1.x && !openLeftClaw){
+                servoLeftClaw.setPosition(0.073);//22 de grade din pozitia initiala
+                openLeftClaw = true;
+            }
+            else if(gamepad1.x && openLeftClaw){
+                servoLeftClaw.setPosition(servos_initial_position);
+                openLeftClaw = false;
+            }
+
+
+            if (gamepad1.b && !openRightClaw) {
+                servoRightClaw.setPosition(0.073);//22 de grade din pozitia initiala
+                openRightClaw = true;
+            }
+            else if(gamepad1.b && openRightClaw){
+                servoRightClaw.setPosition(servos_initial_position);
+                openRightClaw = false;
+            }
+
+
+            // booleanIncrementer = 0;
         }
+
+
+
+
+
+
     }
+
+
+
+//
+//    private boolean ifPressed(boolean button){
+//        boolean output = false;
+//        if(booleanArray.size() == booleanIncrementer){
+//            booleanArray.add(false);
+//        }
+//
+//        boolean buttonWas = booleanArray.get(booleanIncrementer);
+//
+//        if(button != buttonWas && button){
+//            output = true;
+//        }
+//
+//        booleanArray.set(booleanIncrementer, button);
+//        booleanIncrementer = booleanIncrementer + 1;
+//        return  output;
+//    }
 }

@@ -12,6 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
+import java.util.ArrayList;
+
 public class MovementFunctions extends LinearOpMode {
     public DcMotor frontRight, frontLeft, backRight, backLeft;
     public DcMotor linearSlideMotor, circularMovementMotor;
@@ -19,7 +21,7 @@ public class MovementFunctions extends LinearOpMode {
     public Servo servoRightClaw;
     public Servo servoClawAngle;
 
-    public boolean isClawOpen=true;
+
 
     public IMU imu;
 
@@ -30,7 +32,10 @@ public class MovementFunctions extends LinearOpMode {
     public static double gear_ratio = 1;                  //the gear ration may be wrong, check the used gears
     public static double counts_per_gear_rev = ticks_rev_223 * gear_ratio;
     public static double counts_per_degree = counts_per_gear_rev/360;
-    public static double diameter_mm_cable_pulley = 30.0;//trebuie masurat diametrul mosorului
+    public static double diameter_mm_cable_pulley = 42.5;//trebuie masurat diametrul mosorului
+
+    ArrayList<Boolean> booleanArray = new ArrayList<Boolean>();
+    int booleanIncrementer = 0;
 
     public void initialiseMecanum() {
 
@@ -84,15 +89,18 @@ public class MovementFunctions extends LinearOpMode {
         servoRightClaw.setDirection(Servo.Direction.REVERSE);
     }
 
-    public void setClaw(boolean open){
-        if(open) {
+    public void setClawLeft(boolean open){
+        if(open)
             servoLeftClaw.setPosition(0);
+        else
+            servoLeftClaw.setPosition(0.75);
+    }
+
+    public void setClawRight(boolean open){
+        if(open)
             servoRightClaw.setPosition(0);
-        }
-        else{
-            servoLeftClaw.setPosition(0.073);
-            servoRightClaw.setPosition(0.073);
-        }
+        else
+            servoRightClaw.setPosition(0.75);
     }
 
     public void teleOpDrive() {
@@ -186,6 +194,8 @@ public class MovementFunctions extends LinearOpMode {
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         circularMovementMotor.setPower(power);
     }
+
+
 
 
     @Override
