@@ -24,7 +24,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class MovementFunctions extends LinearOpMode {
@@ -40,13 +39,16 @@ public class MovementFunctions extends LinearOpMode {
     public IMU imu;
 
     public List<AprilTagDetection> aprilTagDetections;
-    //HashMap<String, Double> ArmValues = new HashMap<>();
 
-    public static double ticks_rev_223 = 751.8;
-    public static double gear_ratio = 1;                  //the gear ration may be wrong, check the used gears
-    public static double counts_per_gear_rev = ticks_rev_223 * gear_ratio;
-    public static double counts_per_degree = counts_per_gear_rev/360;
-    public static double diameter_mm_cable_pulley = 42.5;//trebuie masurat diametrul mosorului
+
+    static final double COUNTS_PER_MOTOR_REV = 751.8;  //motor 223 rpm
+    static final  double DRIVE_GEAR_REDUCTION = 1;
+    public static double PULLEY_CIRCUMFERENCE_MM = 35.65 * Math.PI;   //aprox. 122 mm
+    static final double COUNTS_PER_PULLEY_REV = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION; //751.8 ticks
+    static final double COUNTS_PER_GEAR_REV = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION;  //751.8 ticks
+    static final double COUNTS_PER_MM = COUNTS_PER_PULLEY_REV / PULLEY_CIRCUMFERENCE_MM; //aprox 6.162 ticks/mm
+    public static double COUNTS_PER_DEGREE = COUNTS_PER_GEAR_REV/360;                   //aprox. 2.088 tiks/degree
+
 
     public void initAprilTag() {
 
@@ -128,9 +130,9 @@ public class MovementFunctions extends LinearOpMode {
         circularMovementMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         circularMovementMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-        circularMovementMotor.setTargetPosition(0);
         circularMovementMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
 
 
@@ -168,20 +170,20 @@ public class MovementFunctions extends LinearOpMode {
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x*1.1;
         double rx = gamepad1.right_stick_x;
-        telemetry.addData("y",y);
-        telemetry.addData("x",x);
-        telemetry.addData("rx",rx);
+//        telemetry.addData("y",y);
+//        telemetry.addData("x",x);
+//        telemetry.addData("rx",rx);
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
         double frontLeftPower = (y-x-rx) / denominator;
         double frontRightPower = (y+x+rx) / denominator;
         double backLeftPower = (y+x-rx) / denominator;
         double backRightPower = (y-x+rx) / denominator;
-
-        telemetry.addData("fl", frontLeftPower);
-        telemetry.addData("fr", frontRightPower);
-        telemetry.addData("bl", backLeftPower);
-        telemetry.addData("br", backRightPower);
+//
+//        telemetry.addData("fl", frontLeftPower);
+//        telemetry.addData("fr", frontRightPower);
+//        telemetry.addData("bl", backLeftPower);
+//        telemetry.addData("br", backRightPower);
 
         MotorValues motorValues= new MotorValues(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 
@@ -243,22 +245,21 @@ public class MovementFunctions extends LinearOpMode {
     }
 
 
-    public int mm_to_ticks(double mm, double ticks_revolution, double diameter, double gear_ratio) {
-        return (int) (((ticks_revolution * mm) / (diameter * Math.PI)) * gear_ratio);
-    }
+
 
 
 
     public void armLinearMovement(double power, double position){
 
-        int targetTicks = mm_to_ticks(position, ticks_rev_223, diameter_mm_cable_pulley, gear_ratio);
+        int targetTicks = (int) (position * COUNTS_PER_MM);
         linearSlideMotor.setTargetPosition(targetTicks);
-        linearSlideMotor.setPower(power);
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearSlideMotor.setPower(power);
+
     }
 
     public void armCircularMovement(double power, double degrees){
-        int armPosition = (int)degrees;
+        int armPosition = (int)(degrees * COUNTS_PER_DEGREE);
         circularMovementMotor.setTargetPosition(armPosition);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         circularMovementMotor.setPower(power);

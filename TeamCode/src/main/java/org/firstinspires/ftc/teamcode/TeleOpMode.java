@@ -10,8 +10,8 @@ import java.util.List;
 
 @TeleOp(name = "TeleOpMode", group = "Linear OpMode")
 public class TeleOpMode extends AutonomousFunctions {
-    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 50.0, 100.0, 150.0);
-    List<Double> listOfArmAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
+    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 200.0, 400.0, 600.0);
+    List<Double> listOfArmAngles = Arrays.asList(0.0, 100.0, 150.0, 200.0);
 
     List<Double> listOfClawAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
 
@@ -78,27 +78,27 @@ public class TeleOpMode extends AutonomousFunctions {
                     servoLeftClaw.setPosition(0.073);
                 }
             }else if(mode==MODES.ENTER_PLACE){
-                telemetry.addLine("Enter Place Mode");
-
-                List<AprilTagDetection> detections = getDetections();
-                AprilTagDetection good;
-
-                boolean found=false;
-                for(AprilTagDetection detection : detections){
-                    if(detection.metadata.id==needid){
-                        good = detection;
-                        found=true;
-                        break;
-                    }
-                }
-
-                if(found==false){
-                    telemetry.addLine("NO APRIL TAG YOU DUMB FUCK");
-                    mode=MODES.MOVE;
-                    break;
-                }
-
-                //alignToActualDetection(good);
+//                telemetry.addLine("Enter Place Mode");
+//
+//                List<AprilTagDetection> detections = getDetections();
+//                AprilTagDetection good;
+//
+//                boolean found=false;
+//                for(AprilTagDetection detection : detections){
+//                    if(detection.metadata.id==needid){
+//                        good = detection;
+//                        found=true;
+//                        break;
+//                    }
+//                }
+//
+//                if(found==false){
+//                    telemetry.addLine("NO APRIL TAG YOU DUMB FUCK");
+//                    mode=MODES.MOVE;
+//                    break;
+//                }
+//
+//                //alignToActualDetection(good);
 
 
                 mode=MODES.PLACE;
@@ -109,15 +109,21 @@ public class TeleOpMode extends AutonomousFunctions {
                 telemetry.addLine("Place Mode");
                 if(gamepadUp.status == Toggler.STATUS.JUST_PRESSED){
                     arm_position_index=Math.min(3, arm_position_index+1);
+
+                    //armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
+                    armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
+                    //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
+
                 }
 
                 if(gamepadDown.status == Toggler.STATUS.JUST_PRESSED){
                     arm_position_index=Math.max(0, arm_position_index-1);
+                    //armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
+                    armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
+                    //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                 }
 
-                armLinearMovement(0.2, listOfLinearSlidePositions.get(arm_position_index));
-                armCircularMovement( 0.2, listOfArmAngles.get(arm_position_index));
-                servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
+
             }
             else if(mode==MODES.ENTER_MOVE){
                 //aici reseteaza chestii cand intram in move
@@ -129,8 +135,8 @@ public class TeleOpMode extends AutonomousFunctions {
             openLeft.update(gamepad2.x);
             openRight.update(gamepad2.b);
             switchModes.update(gamepad1.x);
-            gamepadUp.update(gamepad1.dpad_up);
-            gamepadDown.update(gamepad1.dpad_down);
+            gamepadUp.update(gamepad2.dpad_up);
+            gamepadDown.update(gamepad2.dpad_down);
 
 
             if(switchModes.status == Toggler.STATUS.JUST_PRESSED){
