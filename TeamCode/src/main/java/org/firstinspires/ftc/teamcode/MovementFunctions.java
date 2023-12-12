@@ -42,12 +42,12 @@ public class MovementFunctions extends LinearOpMode {
 
 
     static final double COUNTS_PER_MOTOR_REV = 751.8;  //motor 223 rpm
-    static final  double DRIVE_GEAR_REDUCTION = 1;
-    public static double PULLEY_CIRCUMFERENCE_MM = 35.65 * Math.PI;   //aprox. 122 mm
+    static final double DRIVE_GEAR_REDUCTION = 1;
+    static final double PULLEY_CIRCUMFERENCE_MM = 35.65 * Math.PI;   //aprox. 122 mm
     static final double COUNTS_PER_PULLEY_REV = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION; //751.8 ticks
     static final double COUNTS_PER_GEAR_REV = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION;  //751.8 ticks
     static final double COUNTS_PER_MM = COUNTS_PER_PULLEY_REV / PULLEY_CIRCUMFERENCE_MM; //aprox 6.162 ticks/mm
-    public static double COUNTS_PER_DEGREE = COUNTS_PER_GEAR_REV/360;                   //aprox. 2.088 tiks/degree
+    static final double COUNTS_PER_DEGREE = COUNTS_PER_GEAR_REV/360;                   //aprox. 2.088 tiks/degree
 
 
     public void initAprilTag() {
@@ -129,8 +129,13 @@ public class MovementFunctions extends LinearOpMode {
         linearSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         circularMovementMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        circularMovementMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
         circularMovementMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         circularMovementMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linearSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
@@ -168,8 +173,8 @@ public class MovementFunctions extends LinearOpMode {
         switchMotorModes(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x*1.1;
-        double rx = gamepad1.right_stick_x;
+        double x = -gamepad1.left_stick_x*1.1;
+        double rx = -gamepad1.right_stick_x;
 //        telemetry.addData("y",y);
 //        telemetry.addData("x",x);
 //        telemetry.addData("rx",rx);
@@ -249,9 +254,9 @@ public class MovementFunctions extends LinearOpMode {
 
 
 
-    public void armLinearMovement(double power, double position){
+    public void armLinearMovement(double power, double ticks){
 
-        int targetTicks = (int) (position * COUNTS_PER_MM);
+        int targetTicks = (int) ticks;
         linearSlideMotor.setTargetPosition(targetTicks);
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         linearSlideMotor.setPower(power);
@@ -263,6 +268,7 @@ public class MovementFunctions extends LinearOpMode {
         circularMovementMotor.setTargetPosition(armPosition);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         circularMovementMotor.setPower(power);
+
     }
 
 

@@ -10,8 +10,8 @@ import java.util.List;
 
 @TeleOp(name = "TeleOpMode", group = "Linear OpMode")
 public class TeleOpMode extends AutonomousFunctions {
-    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 200.0, 400.0, 600.0);
-    List<Double> listOfArmAngles = Arrays.asList(0.0, 100.0, 150.0, 200.0);
+    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 62.65, 125.3, 187.95);
+    List<Double> listOfArmAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
 
     List<Double> listOfClawAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
 
@@ -110,16 +110,16 @@ public class TeleOpMode extends AutonomousFunctions {
                 if(gamepadUp.status == Toggler.STATUS.JUST_PRESSED){
                     arm_position_index=Math.min(3, arm_position_index+1);
 
-                    //armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
-                    armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
+                    armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
+                    //armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
                     //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
 
                 }
 
                 if(gamepadDown.status == Toggler.STATUS.JUST_PRESSED){
                     arm_position_index=Math.max(0, arm_position_index-1);
-                    //armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
-                    armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
+                    armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
+                    //armCircularMovement(0.1, listOfArmAngles.get(arm_position_index));rf
                     //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                 }
 
@@ -147,7 +147,7 @@ public class TeleOpMode extends AutonomousFunctions {
                 }
             }
 
-            telemetry.addData("linearSlideMotor", linearSlideMotor.getTargetPosition());
+            telemetry.addData("linearSlideMotor", linearSlideMotor.getCurrentPosition());
             telemetry.addData("circularMovementMotor", circularMovementMotor.getCurrentPosition());
             telemetry.addData("ServoClawAngle", servoClawAngle.getPosition());
             //telemetry.addData("servo_right", servoRightClaw.getPosition());
