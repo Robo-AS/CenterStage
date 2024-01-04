@@ -41,13 +41,16 @@ public class MovementFunctions extends LinearOpMode {
     public List<AprilTagDetection> aprilTagDetections;
 
 
-    static final double COUNTS_PER_MOTOR_REV = 751.8;  //motor 223 rpm
-    static final  double DRIVE_GEAR_REDUCTION = 1;
+    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 145.1;  //motor 1150 rpm
+    static final double COUNTS_PER_MOTOR_REV_LINEAR = 384.5; //motor 435 rpm
+    static final  double DRIVE_GEAR_REDUCTION_LINEAR = 1;
+    static final double DRIVE_GEAR_REDUCTION_CIRCULAR = 28;
     public static double PULLEY_CIRCUMFERENCE_MM = 35.65 * Math.PI;   //aprox. 122 mm
-    static final double COUNTS_PER_PULLEY_REV = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION; //751.8 ticks
-    static final double COUNTS_PER_GEAR_REV = COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION;  //751.8 ticks
+    static final double COUNTS_PER_PULLEY_REV = COUNTS_PER_MOTOR_REV_LINEAR * DRIVE_GEAR_REDUCTION_LINEAR; //751.8 ticks
     static final double COUNTS_PER_MM = COUNTS_PER_PULLEY_REV / PULLEY_CIRCUMFERENCE_MM; //aprox 6.162 ticks/mm
-    public static double COUNTS_PER_DEGREE = COUNTS_PER_GEAR_REV/360;                   //aprox. 2.088 tiks/degree
+
+    static final double COUNTS_PER_GEAR_REV = COUNTS_PER_MOTOR_REV_CIRCULAR * DRIVE_GEAR_REDUCTION_CIRCULAR;  //4,062.8 ticks
+    public static double COUNTS_PER_DEGREE = COUNTS_PER_GEAR_REV/360;                   //aprox. 11.285  tiks/degree
 
 
     public void initAprilTag() {
@@ -126,11 +129,13 @@ public class MovementFunctions extends LinearOpMode {
         linearSlideMotor = hardwareMap.get(DcMotor.class, "linearSlideMotor");
         circularMovementMotor = hardwareMap.get(DcMotor.class, "circularMovementMotor");
 
-        linearSlideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        circularMovementMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         circularMovementMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        circularMovementMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         circularMovementMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
@@ -185,7 +190,7 @@ public class MovementFunctions extends LinearOpMode {
 //        telemetry.addData("bl", backLeftPower);
 //        telemetry.addData("br", backRightPower);
 
-        MotorValues motorValues= new MotorValues(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+        MotorValues motorValues = new MotorValues(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
 
         if (gamepad1.left_bumper)
             motorValues.slowMode();
@@ -249,18 +254,19 @@ public class MovementFunctions extends LinearOpMode {
 
 
 
-    public void armLinearMovement(double power, double position){
+    public void armLinearMovement(double power, double linear_slide_mm){
 
-        int targetTicks = (int) (position * COUNTS_PER_MM);
+        int targetTicks = (int) (linear_slide_mm * COUNTS_PER_MM);
         linearSlideMotor.setTargetPosition(targetTicks);
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         linearSlideMotor.setPower(power);
-
     }
 
+
     public void armCircularMovement(double power, double degrees){
-        int armPosition = (int)(degrees * COUNTS_PER_DEGREE);
-        circularMovementMotor.setTargetPosition(armPosition);
+        //int targetTicks = (int)(degrees * COUNTS_PER_DEGREE);
+        int targetTicks = (int)(degrees * 145.1);
+        circularMovementMotor.setTargetPosition(targetTicks);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         circularMovementMotor.setPower(power);
     }
