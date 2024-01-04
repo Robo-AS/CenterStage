@@ -49,9 +49,16 @@ public class MovementFunctions extends LinearOpMode {
     static final double COUNTS_PER_PULLEY_REV = COUNTS_PER_MOTOR_REV_LINEAR * DRIVE_GEAR_REDUCTION_LINEAR; //751.8 ticks
     static final double COUNTS_PER_MM = COUNTS_PER_PULLEY_REV / PULLEY_CIRCUMFERENCE_MM; //aprox 6.162 ticks/mm
 
-    static final double COUNTS_PER_GEAR_REV = COUNTS_PER_MOTOR_REV_CIRCULAR * DRIVE_GEAR_REDUCTION_CIRCULAR;  //4,062.8 ticks
-    public static double COUNTS_PER_DEGREE = COUNTS_PER_GEAR_REV/360;                   //aprox. 11.285  tiks/degree
+    static final double COUNTS_PER_GEAR_REV = COUNTS_PER_MOTOR_REV_CIRCULAR * DRIVE_GEAR_REDUCTION_CIRCULAR;  //4062.8 ticks
+    public static double COUNTS_PER_DEGREE = COUNTS_PER_GEAR_REV/360;                   //aprox 11.285  tiks/degree
 
+
+    // 145.1 ticks - o revolutie a motorului
+    // 145.1 * 28  - 28 de revolutii ale motorului
+    //             - 28 de revolutii - revolutie worm gear
+    //                               - revolutie worm gear - 360 de grade brat
+    // 145.1 * 28 - 360 de grade brat
+    // 11.285     - 1 grad brat
 
     public void initAprilTag() {
 
@@ -255,7 +262,6 @@ public class MovementFunctions extends LinearOpMode {
 
 
     public void armLinearMovement(double power, double linear_slide_mm){
-
         int targetTicks = (int) (linear_slide_mm * COUNTS_PER_MM);
         linearSlideMotor.setTargetPosition(targetTicks);
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -264,8 +270,7 @@ public class MovementFunctions extends LinearOpMode {
 
 
     public void armCircularMovement(double power, double degrees){
-        //int targetTicks = (int)(degrees * COUNTS_PER_DEGREE);
-        int targetTicks = (int)(degrees * 145.1);
+        int targetTicks = (int)(degrees * COUNTS_PER_DEGREE);
         circularMovementMotor.setTargetPosition(targetTicks);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         circularMovementMotor.setPower(power);
