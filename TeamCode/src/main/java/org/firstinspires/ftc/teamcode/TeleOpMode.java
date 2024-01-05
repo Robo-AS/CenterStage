@@ -120,8 +120,6 @@ public class TeleOpMode extends AutonomousFunctions {
                     armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
                     //servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                 }
-
-
             }
             else if(mode==MODES.ENTER_MOVE){
                 //aici reseteaza chestii cand intram in move
