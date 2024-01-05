@@ -132,10 +132,14 @@ public class MovementFunctions extends LinearOpMode {
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+
         circularMovementMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         circularMovementMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         linearSlideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+
 
         servoLeftClaw = hardwareMap.get(Servo.class, "servoLeftClaw");
         servoRightClaw = hardwareMap.get(Servo.class, "servoRightClaw");
@@ -146,6 +150,8 @@ public class MovementFunctions extends LinearOpMode {
         servoLeftClaw.setPosition(0);
         servoRightClaw.setPosition(0);
         servoClawAngle.setPosition(0);
+
+
     }
 
     public void setClawLeft(boolean open){
