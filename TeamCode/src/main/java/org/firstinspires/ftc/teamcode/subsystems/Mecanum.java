@@ -10,6 +10,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+
 public class Mecanum extends SampleMecanumDrive {
 
 
@@ -31,7 +34,7 @@ public class Mecanum extends SampleMecanumDrive {
 
     private Mode mode = Mode.NORMAL;
 
-    public void teleOp(Gamepad gamepad1, Telemetry telemetry){
+    public void teleOp(GamepadEx gamepad, Telemetry telemetry){
 
         update();
 
@@ -46,14 +49,14 @@ public class Mecanum extends SampleMecanumDrive {
         switch (mode){
             case NORMAL:
                 Pose2d driveDirection = new Pose2d(
-                -gamepad1.left_stick_y,
-                -gamepad1.left_stick_x,
-                -gamepad1.right_stick_x
+                -gamepad.getLeftY(),
+                -gamepad.getLeftX(),
+                -gamepad.getRightX()
                  );
 
                 setWeightedDrivePower(driveDirection);
 
-                if(gamepad1.a){
+                if(gamepad.wasJustPressed(GamepadKeys.Button.A)){
                     //go to blue board
 
                     Trajectory traj = trajectoryBuilder(poseEstimate)
@@ -68,7 +71,7 @@ public class Mecanum extends SampleMecanumDrive {
 
                     break;
                 case AUTO:
-                    if(gamepad1.x){
+                    if(gamepad.wasJustPressed(GamepadKeys.Button.X)){
                         breakFollowing();
                         mode = Mode.NORMAL;
                     }    

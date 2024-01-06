@@ -11,8 +11,14 @@ import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.subsystems.Vision;
 import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+
+
 @TeleOp(name = "TeleOpDrive", group= "Linear Opmode")
 public class TeleOpDrive extends LinearOpMode {
+
+    GamepadEx driver;
+    GamepadEx operator;
 
     Mecanum drive;
 
@@ -20,17 +26,26 @@ public class TeleOpDrive extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+
+        driver = new GamepadEx(gamepad1);
+        operator = new GamepadEx(gamepad2);
+        
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         drive = new Mecanum(hardwareMap);
+        claw = new Claw(hardwareMap);
 
         waitForStart();
         runtime.reset();
 
         while (opModeIsActive()) {
-            drive.teleop(gamepad1,telemetry);
-            
+            driver.readButtons();
+            operator.readButtons();
+
+            drive.teleop(driver,telemetry);
+            claw.teleop(operator,telemetry);
             
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
