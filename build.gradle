@@ -12,7 +12,6 @@ buildscript {
     dependencies {
         // Note for FTC Teams: Do not modify this yourself.
         classpath 'com.android.tools.build:gradle:7.2.0'
-        implementation 'org.ftclib.ftclib:core:2.0.1' 
     }
 }
 
