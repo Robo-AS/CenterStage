@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.drive;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 /*
  * Constants shared between multiple drive types.
  *
@@ -24,6 +24,13 @@ public class DriveConstants {
      */
     public static final double TICKS_PER_REV = 145.6;
     public static final double MAX_RPM = 1150;
+    public static final double TRACK_WIDTH= 15;
+
+    public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+    public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR = RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
+
+
+
 
     /*
      * Set RUN_USING_ENCODER to true to enable built-in hub velocity control using drive encoders.
@@ -41,7 +48,7 @@ public class DriveConstants {
 
     public static double WHEEL_RADIUS = 100;
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    /
+
 
     public static double kV = 1.0 / rpmToVelocity(MAX_RPM);
     public static double kA = 0;
