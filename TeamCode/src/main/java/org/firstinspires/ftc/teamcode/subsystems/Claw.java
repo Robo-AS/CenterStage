@@ -1,10 +1,12 @@
-package org.firstinspires.ftc.subsystems;
+package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
+import com.arcrobotics.ftclib.gamepad.TriggerReader;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -19,6 +21,9 @@ public class Claw {
     private boolean rightOpen = false;
     private boolean leftOpen = false;
 
+    private TriggerReader leftTrigger;
+    private TriggerReader rightTrigger;
+
     public Claw(HardwareMap hardwareMap){
         clawRight = hardwareMap.get(Servo.class, "clawRight");
         clawLeft = hardwareMap.get(Servo.class, "clawLeft");
@@ -27,19 +32,26 @@ public class Claw {
 
         clawLeft.setPosition(0);
         clawRight.setPosition(0);
+
+        rightOpen = false;
+        leftOpen = false;
+
     }
 
 
 
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
-        
-        if(gamepad.wasJustPressed(GamepadKeys.Trigger.LEFT_TRIGGER)){
-            boolean leftOpen = !leftOpen;
+
+        leftTrigger.readValue();
+        rightTrigger.readValue();
+
+        if(gamepad.wasJustPressed(GamepadKeys.Button.A)){
+            leftOpen = !leftOpen;
             clawLeft.setPosition(leftOpen ? clawOpen : clawClosed);
         }
-        if(gamepad.wasJustPressed(GamepadKeys.Trigger.RIGHT_TRIGGER)){
-            boolean rightOpen = !rightOpen;
+        if(gamepad.wasJustPressed(GamepadKeys.Button.B)){
+            rightOpen = !rightOpen;
             clawRight.setPosition(rightOpen ? clawOpen : clawClosed);
         }
 

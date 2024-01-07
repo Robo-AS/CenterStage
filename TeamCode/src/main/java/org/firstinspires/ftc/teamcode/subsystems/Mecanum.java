@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
@@ -19,7 +20,7 @@ public class Mecanum extends SampleMecanumDrive {
     public Mecanum(HardwareMap hardwareMap){
         super(hardwareMap);
 
-        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
+        setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     enum Mode{
@@ -34,7 +35,7 @@ public class Mecanum extends SampleMecanumDrive {
 
     private Mode mode = Mode.NORMAL;
 
-    public void teleOp(GamepadEx gamepad, Telemetry telemetry){
+    public void teleop(GamepadEx gamepad, Telemetry telemetry){
 
         update();
 
@@ -69,7 +70,6 @@ public class Mecanum extends SampleMecanumDrive {
                 }
                 break;
 
-                    break;
                 case AUTO:
                     if(gamepad.wasJustPressed(GamepadKeys.Button.X)){
                         breakFollowing();
