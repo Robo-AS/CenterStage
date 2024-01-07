@@ -38,7 +38,7 @@ public class DriveConstants {
       getMotorVelocityF(MAX_RPM / 60 * TICKS_PER_REV));
 
     
-      
+
     public static double WHEEL_RADIUS = 100;
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
     /
@@ -54,7 +54,7 @@ public class DriveConstants {
     public static double MAX_ANG_ACCEL = Math.toRadians(343.77467707849394);
 
 
-    public static double encoderTicksToInches(double ticks) {
+    public static double encoderTicksToMM(double ticks) {
         return WHEEL_RADIUS * 2 * Math.PI * GEAR_RATIO * ticks / TICKS_PER_REV;
     }
 

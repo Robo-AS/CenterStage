@@ -21,6 +21,7 @@ public class TeleOpDrive extends LinearOpMode {
     GamepadEx operator;
 
     Mecanum drive;
+    Claw claw;
 
     private ElapsedTime runtime = new ElapsedTime();
 

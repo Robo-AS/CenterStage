@@ -22,13 +22,15 @@ public class Claw {
     public Claw(HardwareMap hardwareMap){
         clawRight = hardwareMap.get(Servo.class, "clawRight");
         clawLeft = hardwareMap.get(Servo.class, "clawLeft");
+        
         clawRight.setDirection(Servo.Direction.REVERSE);
 
         clawLeft.setPosition(0);
         clawRight.setPosition(0);
-        
-
     }
+
+
+
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
         
@@ -45,8 +47,5 @@ public class Claw {
         telemetry.addData("clawRight", clawRight.getPosition());
 
     }
-
-
-
 
 }

@@ -16,8 +16,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 public class Mecanum extends SampleMecanumDrive {
 
 
-    public Mecanum(){
-        super();
+    public Mecanum(HardwareMap hardwareMap){
+        super(hardwareMap);
 
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER)
     }
