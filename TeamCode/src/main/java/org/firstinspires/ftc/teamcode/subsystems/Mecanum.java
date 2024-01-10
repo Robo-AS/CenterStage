@@ -50,10 +50,12 @@ public class Mecanum extends SampleMecanumDrive {
             case NORMAL:
 
                 Pose2d driveDirection = new Pose2d(
-                -gamepad.getLeftY(),
-                -gamepad.getLeftX(),
-                -gamepad.getRightX()
+                gamepad.getLeftY(),
+                gamepad.getLeftX(),
+                gamepad.getRightX()
                  );
+
+                telemetry.addData("ceva",gamepad.getLeftY());
 
                 setWeightedDrivePower(driveDirection);
 
