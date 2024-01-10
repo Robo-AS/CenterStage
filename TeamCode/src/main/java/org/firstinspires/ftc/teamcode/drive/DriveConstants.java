@@ -24,7 +24,7 @@ public class DriveConstants {
      */
     public static final double TICKS_PER_REV = 145.6;
     public static final double MAX_RPM = 1150;
-    public static final double TRACK_WIDTH= 15;
+    public static final double TRACK_WIDTH= 324;
 
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR = RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR = RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
@@ -46,7 +46,7 @@ public class DriveConstants {
 
     
 
-    public static double WHEEL_RADIUS = 100;
+    public static double WHEEL_RADIUS = 96;
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
 
 

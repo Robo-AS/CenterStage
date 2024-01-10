@@ -49,6 +49,7 @@ public class Mecanum extends SampleMecanumDrive {
 
         switch (mode){
             case NORMAL:
+
                 Pose2d driveDirection = new Pose2d(
                 -gamepad.getLeftY(),
                 -gamepad.getLeftX(),
