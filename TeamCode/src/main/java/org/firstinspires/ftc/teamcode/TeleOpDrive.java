@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
+import org.firstinspires.ftc.teamcode.subsystems.Arm;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
@@ -17,35 +20,38 @@ public class TeleOpDrive extends LinearOpMode {
     GamepadEx operator;
 
     Mecanum drive;
-    //Claw claw;
+    Claw claw;
+
+    Arm arm;
+
+    private ElapsedTime runtime = new ElapsedTime();
 
     @Override
     public void runOpMode() {
 
+        driver = new GamepadEx(gamepad1);
+        operator = new GamepadEx(gamepad2);
+        
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        driver = new GamepadEx(gamepad1);
-        operator = new GamepadEx(gamepad2);
-
         drive = new Mecanum(hardwareMap);
-        //claw = new Claw(hardwareMap);
+        claw = new Claw(hardwareMap);
+        arm = new Arm(hardwareMap);
 
         waitForStart();
+        runtime.reset();
 
         while (opModeIsActive()) {
             driver.readButtons();
             operator.readButtons();
 
             drive.teleop(driver,telemetry);
-            //claw.teleop(operator,telemetry);
+            claw.teleop(operator,telemetry);
+            arm.teleop(operator, telemetry);
+            
 
-            if(driver.wasJustPressed(GamepadKeys.Button.A))
-            {
-                telemetry.addLine("sus");
-            }
-
-
+            telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();
         }
 
