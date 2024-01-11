@@ -21,8 +21,8 @@ public class Claw {
     private boolean rightOpen = false;
     private boolean leftOpen = false;
 
-    private TriggerReader leftTrigger;
-    private TriggerReader rightTrigger;
+//    private TriggerReader leftTrigger;
+//    private TriggerReader rightTrigger;
 
     public Claw(HardwareMap hardwareMap){
         clawRight = hardwareMap.get(Servo.class, "clawRight");
@@ -43,8 +43,8 @@ public class Claw {
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
 
-        leftTrigger.readValue();
-        rightTrigger.readValue();
+//        leftTrigger.readValue();
+//        rightTrigger.readValue();
 
         if(gamepad.wasJustPressed(GamepadKeys.Button.A)){
             leftOpen = !leftOpen;

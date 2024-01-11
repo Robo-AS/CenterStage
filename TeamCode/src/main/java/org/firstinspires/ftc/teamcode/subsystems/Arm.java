@@ -57,6 +57,8 @@ public class Arm {
 
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        servoClawAngle.setPosition(0);
     }
 
 
@@ -66,7 +68,6 @@ public class Arm {
             armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
             armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
             servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
-
         }
 
         if(gamepad.wasJustPressed((GamepadKeys.Button.DPAD_DOWN))){
@@ -80,7 +81,7 @@ public class Arm {
 
 
 
-    private void armLinearMovement(double power, double linear_slide_mm){
+    public void armLinearMovement(double power, double linear_slide_mm){
         int targetTicks = (int) (linear_slide_mm * COUNTS_PER_MM);
         linearSlideMotor.setTargetPosition(targetTicks);
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -88,7 +89,7 @@ public class Arm {
     }
 
 
-    private void armCircularMovement(double power, double degrees){
+    public void armCircularMovement(double power, double degrees){
         int targetTicks = (int)(degrees * COUNTS_PER_DEGREE);
         circularMovementMotor.setTargetPosition(targetTicks);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);

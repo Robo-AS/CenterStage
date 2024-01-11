@@ -4,11 +4,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 
@@ -21,8 +19,8 @@ public class TeleOpDrive extends LinearOpMode {
 
     Mecanum drive;
     Claw claw;
-
     Arm arm;
+
 
     private ElapsedTime runtime = new ElapsedTime();
 
