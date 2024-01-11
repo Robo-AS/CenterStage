@@ -39,9 +39,16 @@ public class Arm {
     // 11.285     - 1 grad brat
 
 
-    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 0.0, 120.0, 180.0); //trebuie determinati parametrii ca lumea
-    List<Double> listOfArmAngles = Arrays.asList(0.0, 180.0, 0.0, 0.0); //trebuie determinati parametrii ca lumea
-    List<Double> listOfClawAngles = Arrays.asList(0.0, 30.0, 45.0, 60.0);
+    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 220.0); //trebuie determinati parametrii ca lumea
+    List<Double> listOfArmAngles = Arrays.asList(0.0, 90.0); //trebuie determinati parametrii ca lumea
+    List<Double> listOfClawAngles = Arrays.asList(0.0, 0.25);
+
+
+
+    private double linearSlidePower = 0.4;
+
+    private double circularPower = 0.8;
+    private double linearSlideMult = 222.0/220.0;
 
     private int arm_position_index = 0;
 
@@ -57,31 +64,42 @@ public class Arm {
 
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        servoClawAngle.setPosition(0);
     }
 
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
+
         if(gamepad.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-            arm_position_index = Math.min(4, arm_position_index+1);
-            armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
-            armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
+            arm_position_index = Math.min(2, arm_position_index+1);
+            armLinearMovement(linearSlidePower, listOfLinearSlidePositions.get(arm_position_index));
+            armCircularMovement( circularPower, listOfArmAngles.get(arm_position_index));
             servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
         }
 
         if(gamepad.wasJustPressed((GamepadKeys.Button.DPAD_DOWN))){
             arm_position_index=Math.max(0, arm_position_index-1);
-            armLinearMovement(0.1, listOfLinearSlidePositions.get(arm_position_index));
-            armCircularMovement( 0.1, listOfArmAngles.get(arm_position_index));
+            armLinearMovement(linearSlidePower, listOfLinearSlidePositions.get(arm_position_index));
+            armCircularMovement( circularPower, listOfArmAngles.get(arm_position_index));
             servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
         }
+
+        if (circularMovementMotor.getCurrentPosition()>circularMovementMotor.getTargetPosition()){
+            int dist = circularMovementMotor.getCurrentPosition()-circularMovementMotor.getTargetPosition();
+            double coeff = dist;
+            coeff = coeff/180.0;
+            circularMovementMotor.setPower(coeff);  //daca nu merge doar pune gen 0.2 sa uceva
+        }
+
+
+        telemetry.addData("linear slide",linearSlideMotor.getCurrentPosition());
+        telemetry.addData("wristangle", servoClawAngle.getPosition());
+
 
     }
 
 
 
-    public void armLinearMovement(double power, double linear_slide_mm){
+    private void armLinearMovement(double power, double linear_slide_mm){
         int targetTicks = (int) (linear_slide_mm * COUNTS_PER_MM);
         linearSlideMotor.setTargetPosition(targetTicks);
         linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
