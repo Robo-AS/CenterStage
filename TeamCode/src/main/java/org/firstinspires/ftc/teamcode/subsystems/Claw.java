@@ -15,7 +15,7 @@ public class Claw {
     private Servo clawRight;
     private Servo clawLeft;
 
-    private double clawOpen = 0.075;
+    private double clawOpen = 0.077;
     private double clawClosed = 0;
 
     private boolean rightOpen = false;
@@ -29,8 +29,8 @@ public class Claw {
         clawRight.setDirection(Servo.Direction.REVERSE);
 
 
-        //clawLeft.setPosition(0);
-        //clawRight.setPosition(0);
+        clawLeft.setPosition(0);
+        clawRight.setPosition(0);
 
         rightOpen = false;
         leftOpen = false;
@@ -43,7 +43,7 @@ public class Claw {
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
 
 
-        if(gamepad.wasJustPressed(GamepadKeys.Button.A)){
+        if(gamepad.wasJustPressed(GamepadKeys.Button.X)){
             leftOpen = !leftOpen;
             clawLeft.setPosition(leftOpen ? clawOpen : clawClosed);
         }
@@ -52,8 +52,7 @@ public class Claw {
             clawRight.setPosition(rightOpen ? clawOpen : clawClosed);
         }
 
-        telemetry.addData("clawLeft", clawLeft.getPosition());
-        telemetry.addData("clawRight", clawRight.getPosition());
+        //TELEMETRIE AICI SA VEDEM DACA CLESTELE E INCHIS SAU DESCHIS
 
     }
 

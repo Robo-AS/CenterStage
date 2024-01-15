@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.subsystems.Claw;
 import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
 import org.firstinspires.ftc.teamcode.subsystems.Arm;
+import org.firstinspires.ftc.teamcode.subsystems.Drone;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 
@@ -20,6 +21,7 @@ public class TeleOpDrive extends LinearOpMode {
     Mecanum drive;
     Claw claw;
     Arm arm;
+    Drone drone;
 
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -36,6 +38,7 @@ public class TeleOpDrive extends LinearOpMode {
         drive = new Mecanum(hardwareMap);
         claw = new Claw(hardwareMap);
         arm = new Arm(hardwareMap);
+        drone = new Drone(hardwareMap);
 
         waitForStart();
         runtime.reset();
@@ -47,6 +50,7 @@ public class TeleOpDrive extends LinearOpMode {
             drive.teleop(driver,telemetry);
             claw.teleop(operator,telemetry);
             arm.teleop(operator, telemetry);
+            drone.teleop(driver, telemetry);
             
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());

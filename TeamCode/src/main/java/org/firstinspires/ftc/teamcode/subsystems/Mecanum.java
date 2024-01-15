@@ -2,11 +2,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.acmerobotics.roadrunner.geometry.Vector2d;
-import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.acmerobotics.roadrunner.util.Angle;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -15,6 +10,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 
 public class Mecanum extends SampleMecanumDrive {
+
+    public static double reduction = 0.5;
 
     public Mecanum(HardwareMap hardwareMap) {
         super(hardwareMap);
@@ -46,7 +43,12 @@ public class Mecanum extends SampleMecanumDrive {
         switch (mode) {
             case NORMAL:
 
-                double mult = 1 - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) * 0.80;
+                //double mult = (1 - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) * 0.80) *reduction;
+
+                //AM MODIFICAT AICI SA NU MA SCADA GRADUAL MISCAREA
+                double mult = 0.5;
+                if(gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
+                    mult = 0.2;        ;
 
                 double x = gamepad.getLeftY();
                 double y = -gamepad.getLeftX();
@@ -65,7 +67,7 @@ public class Mecanum extends SampleMecanumDrive {
                         y * mult,
                         h * mult);
 
-                telemetry.addData("ceva", gamepad.getLeftY());
+
 
                 setWeightedDrivePower(driveDirection);
 
