@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -23,8 +24,7 @@ public class Mecanum extends SampleMecanumDrive {
         AUTO,
     }
 
-    Pose2d blueBoard = new Pose2d(0, 0, 0);
-    Pose2d redBoard = new Pose2d(0, 0, 0);
+    Pose2d targetPose = new Pose2d(0.0,0.0,0.0);
 
     private boolean fieldOriented = false;
     private Mode mode = Mode.NORMAL;
@@ -71,28 +71,36 @@ public class Mecanum extends SampleMecanumDrive {
 
                 setWeightedDrivePower(driveDirection);
 
-                /*
-                 * if(gamepad.wasJustPressed(GamepadKeys.Button.A)){
-                 * //go to blue board
-                 * 
-                 * Trajectory traj = trajectoryBuilder(poseEstimate)
-                 * .splineToLinearHeading(blueBoard, 0)
-                 * .build();
-                 * 
-                 * followTrajectoryAsync(traj);
-                 * 
-                 * mode = Mode.AUTO;
-                 * }
-                 */
+                  if(gamepad.wasJustPressed(GamepadKeys.Button.A)){
+                  //go to blue board
+                  mode = Mode.AUTO;
+                  }
+
                 break;
 
             case AUTO:
+
+                double dx = targetPose.getX()-poseEstimate.getX();
+                double dy = targetPose.getY()-poseEstimate.getY();
+                double dh = targetPose.getHeading()-poseEstimate.getHeading();
+
+                double lx = dx/Math.abs(dx)*Math.min(0.4, Math.abs(dx/2000.0));
+
+                double ly = dy/Math.abs(dy)*Math.min(0.4, Math.abs(dy/2000.0));
+
+                double lh = dh/Math.abs(dh)*Math.min(0.2, Math.abs(dh)/2000.0);
+
+                Pose2d newDir = new Pose2d(
+                        lx, ly, lh
+                );
+
+                setWeightedDrivePower(newDir);
+
                 if (gamepad.wasJustPressed(GamepadKeys.Button.X)) {
-                    breakFollowing();
                     mode = Mode.NORMAL;
                 }
 
-                if (!isBusy()) {
+                if (Math.abs(dx)<6 && Math.abs(dy)<6 && Math.abs(dh)<6){
                     mode = Mode.NORMAL;
                 }
 

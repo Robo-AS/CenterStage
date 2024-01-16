@@ -24,7 +24,7 @@ public class Arm {
     private Servo servoClawAngle;
 
     static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 145.1;  //motor 1150 rpm
-    static final double COUNTS_PER_MOTOR_REV_LINEAR = 384.5; //motor 435 rpm
+    static final double COUNTS_PER_MOTOR_REV_LINEAR = 1425.1; //motor 117 rpm
     static final  double DRIVE_GEAR_REDUCTION_LINEAR = 1;
     static final double DRIVE_GEAR_REDUCTION_CIRCULAR = 28;
     public static double PULLEY_CIRCUMFERENCE_MM = 35.65 * Math.PI;   //aprox. 122 mm
@@ -145,21 +145,14 @@ public class Arm {
 
             case liftArm:
                 armCircularMovement(circularPowerUP, 120.0);
-                armLinearMovement(linearSlidePower, 239.0);
+                armLinearMovement(0.01, 120.0);
                 break;
             case closeArm:
                 //AICI AVEM PROBLEMA CA SA CONSTRACTA IN CONTINUU
-                armLinearMovement(linearSlidePower, 2.0);
+                armLinearMovement(linearSlidePower, 50.0 );
 
                 break;
         }
-
-
-        telemetry.addData("circular movement", circularMovementMotor.getCurrentPosition());
-        telemetry.addData("linear slide",linearSlideMotor.getCurrentPosition());
-        telemetry.addData("wristangle", servoClawAngle.getPosition());
-
-
 
     }
 
