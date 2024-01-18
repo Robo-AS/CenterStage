@@ -12,28 +12,19 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Claw {
 
-    private Servo clawRight;
-    private Servo clawLeft;
+    private Servo rightWheel;
+    private Servo leftWheel;
 
-    private double clawOpen = 0.077;
-    private double clawClosed = 0;
 
-    private boolean rightOpen = false;
-    private boolean leftOpen = false;
+
+
+
+
 
 
     public Claw(HardwareMap hardwareMap){
-        clawRight = hardwareMap.get(Servo.class, "clawRight");
-        clawLeft = hardwareMap.get(Servo.class, "clawLeft");
-        
-        clawRight.setDirection(Servo.Direction.REVERSE);
-
-
-        clawLeft.setPosition(0);
-        clawRight.setPosition(0);
-
-        rightOpen = false;
-        leftOpen = false;
+        rightWheel = hardwareMap.get(Servo.class, "clawRight");
+        leftWheel = hardwareMap.get(Servo.class, "clawLeft");
 
     }
 
@@ -44,15 +35,23 @@ public class Claw {
 
 
         if(gamepad.wasJustPressed(GamepadKeys.Button.X)){
-            leftOpen = !leftOpen;
-            clawLeft.setPosition(leftOpen ? clawOpen : clawClosed);
-        }
-        if(gamepad.wasJustPressed(GamepadKeys.Button.B)){
-            rightOpen = !rightOpen;
-            clawRight.setPosition(rightOpen ? clawOpen : clawClosed);
+            rightWheel.setPosition(0);
+            leftWheel.setPosition(1);
         }
 
-        //TELEMETRIE AICI SA VEDEM DACA CLESTELE E INCHIS SAU DESCHIS
+        if(gamepad.wasJustPressed(GamepadKeys.Button.B)){
+            rightWheel.setPosition(1);
+            leftWheel.setPosition(0);
+        }
+
+
+        if(gamepad.wasJustPressed(GamepadKeys.Button.Y)){
+            rightWheel.setPosition(0.5);
+            leftWheel.setPosition(0.5);
+        }
+
+
+
 
     }
 

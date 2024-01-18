@@ -27,7 +27,7 @@ public class Arm {
     static final double COUNTS_PER_MOTOR_REV_LINEAR = 1425.1; //motor 117 rpm
     static final  double DRIVE_GEAR_REDUCTION_LINEAR = 1;
     static final double DRIVE_GEAR_REDUCTION_CIRCULAR = 28;
-    public static double PULLEY_CIRCUMFERENCE_MM = 35.65 * Math.PI;   //aprox. 122 mm
+    public static double PULLEY_CIRCUMFERENCE_MM = 112;   //aprox. 122 mm
     static final double COUNTS_PER_PULLEY_REV = COUNTS_PER_MOTOR_REV_LINEAR * DRIVE_GEAR_REDUCTION_LINEAR; //751.8 ticks
     static final double COUNTS_PER_MM = COUNTS_PER_PULLEY_REV / PULLEY_CIRCUMFERENCE_MM; //aprox 6.162 ticks/mm
 
@@ -47,14 +47,14 @@ public class Arm {
 
     List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 0.0, 50.0, 220.0);
     List<Double> listOfArmAngles = Arrays.asList(0.0, 25.0, 154.0, 147.0);
-    List<Double> listOfClawAngles = Arrays.asList(0.0, 0.0, 0.5, 0.5);
+    List<Double> listOfClawAngles = Arrays.asList(0.0, 0.0, 0.0, 0.0);
 
 
 
-    public static double linearSlidePower = 0.5;
-    public static double circularPowerUP = 0.5;
+    public static double linearSlidePower = 0.1;
+    public static double circularPowerUP = 0.1;
 
-    public static double circularPowerDOWN = 0.4;
+    public static double circularPowerDOWN = 0.1;
     private double linearSlideMult = 222.0/220.0;
 
     private int arm_position_index = 0;
@@ -114,13 +114,12 @@ public class Arm {
 
         switch (currentState){
             case notLifting:
-                telemetry.addData(">", "NOT_LIFTING");
-                telemetry.update();
+
                 if(gamepad.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
                     arm_position_index = Math.min(3, arm_position_index+1);
                     armCircularMovement( circularPowerUP, listOfArmAngles.get(arm_position_index));
-                    servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                     armLinearMovement(linearSlidePower, listOfLinearSlidePositions.get(arm_position_index));
+                    servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
 
                 }
 
@@ -128,8 +127,8 @@ public class Arm {
                 if(gamepad.wasJustPressed((GamepadKeys.Button.DPAD_DOWN))){
                     arm_position_index=Math.max(0, arm_position_index-1);
                     armCircularMovement( circularPowerDOWN, listOfArmAngles.get(arm_position_index));
-                    servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
                     armLinearMovement(linearSlidePower, listOfLinearSlidePositions.get(arm_position_index));
+                    servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
 
                 }
 
@@ -145,11 +144,11 @@ public class Arm {
 
             case liftArm:
                 armCircularMovement(circularPowerUP, 120.0);
-                armLinearMovement(0.01, 120.0);
+                armLinearMovement(0.1, 120.0);
                 break;
             case closeArm:
                 //AICI AVEM PROBLEMA CA SA CONSTRACTA IN CONTINUU
-                armLinearMovement(linearSlidePower, 50.0 );
+                armLinearMovement(0.1, 50.0);
 
                 break;
         }
@@ -173,6 +172,9 @@ public class Arm {
         circularMovementMotor.setPower(power);
 
     }
+
+
+
 
 
 }
