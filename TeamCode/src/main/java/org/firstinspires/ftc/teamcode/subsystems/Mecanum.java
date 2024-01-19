@@ -71,10 +71,10 @@ public class Mecanum extends SampleMecanumDrive {
 
                 setWeightedDrivePower(driveDirection);
 
-                  if(gamepad.wasJustPressed(GamepadKeys.Button.A)){
+                  //if(gamepad.wasJustPressed(GamepadKeys.Button.A)){
                   //go to blue board
-                  mode = Mode.AUTO;
-                  }
+                  //mode = Mode.AUTO;
+                  //}
 
                 break;
 
