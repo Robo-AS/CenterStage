@@ -14,6 +14,7 @@ public class Mecanum extends SampleMecanumDrive {
 
     public static double reduction = 0.5;
 
+    public static double MIN_JOY_VAL= 0.01;
     public Mecanum(HardwareMap hardwareMap) {
         super(hardwareMap);
         setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -35,10 +36,10 @@ public class Mecanum extends SampleMecanumDrive {
 
         Pose2d poseEstimate = getPoseEstimate();
 
-        telemetry.addData("mode", mode);
-        telemetry.addData("x", poseEstimate.getX());
-        telemetry.addData("y", poseEstimate.getY());
-        telemetry.addData("heading", poseEstimate.getHeading());
+//        telemetry.addData("mode", mode);
+//        telemetry.addData("x", poseEstimate.getX());
+//        telemetry.addData("y", poseEstimate.getY());
+//        telemetry.addData("heading", poseEstimate.getHeading());
 
         switch (mode) {
             case NORMAL:
@@ -47,12 +48,22 @@ public class Mecanum extends SampleMecanumDrive {
 
                 //AM MODIFICAT AICI SA NU MA SCADA GRADUAL MISCAREA
                 double mult = 0.5;
-                if(gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER)>0.5)
-                    mult = 0.2;        ;
+                double mult_rotation = 0.7;
+                if(gamepad.isDown(GamepadKeys.Button.LEFT_BUMPER)){
+                    mult = 0.2;
+                    mult_rotation = 0.3;
+                }
 
-                double x = gamepad.getLeftY();
-                double y = -gamepad.getLeftX();
-                double h = -gamepad.getRightX();
+
+                double x = -gamepad.getLeftY();
+                double y = gamepad.getLeftX()*2;
+                double h = -gamepad.getRightX()*0.9;
+
+
+//                if (Math.abs(x) < MIN_JOY_VAL) {x=0;}
+//                if (Math.abs(y) < MIN_JOY_VAL) {y=0;}
+
+
 
                 if (fieldOriented) {
                     double angle = poseEstimate.getHeading();
@@ -65,7 +76,7 @@ public class Mecanum extends SampleMecanumDrive {
                 Pose2d driveDirection = new Pose2d(
                         x * mult,
                         y * mult,
-                        h * mult);
+                        h * mult_rotation);
 
 
 

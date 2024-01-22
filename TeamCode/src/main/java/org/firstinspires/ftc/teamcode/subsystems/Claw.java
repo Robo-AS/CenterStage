@@ -12,19 +12,26 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Claw {
 
-    private Servo rightWheel;
-    private Servo leftWheel;
+    private Servo clawRight;
+    private Servo clawLeft;
 
+    private double clawOpen = 0.13;
+    private double clawClosed = 0;
 
-
-
-
-
+    private boolean rightOpen = false;
+    private boolean leftOpen = false;
 
 
     public Claw(HardwareMap hardwareMap){
-        rightWheel = hardwareMap.get(Servo.class, "clawRight");
-        leftWheel = hardwareMap.get(Servo.class, "clawLeft");
+        clawRight = hardwareMap.get(Servo.class, "clawRight");
+        clawLeft = hardwareMap.get(Servo.class, "clawLeft");
+
+        clawRight.setDirection(Servo.Direction.REVERSE);
+
+
+        clawLeft.setPosition(0);
+        clawRight.setPosition(0);
+
 
     }
 
@@ -34,25 +41,28 @@ public class Claw {
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
 
 
-        if(gamepad.wasJustPressed(GamepadKeys.Button.X)){
-            rightWheel.setPosition(0);
-            leftWheel.setPosition(1);
-        }
-
         if(gamepad.wasJustPressed(GamepadKeys.Button.B)){
-            rightWheel.setPosition(1);
-            leftWheel.setPosition(0);
+            leftOpen = !leftOpen;
+            clawLeft.setPosition(leftOpen ? clawOpen : clawClosed);
         }
-
-
         if(gamepad.wasJustPressed(GamepadKeys.Button.Y)){
-            rightWheel.setPosition(0.5);
-            leftWheel.setPosition(0.5);
+            rightOpen = !rightOpen;
+            clawRight.setPosition(rightOpen ? clawOpen : clawClosed);
         }
 
 
+        telemetry.addData("openLeftClaw", leftOpen);
+        telemetry.addData("openRightClaw", rightOpen);
 
 
+
+
+    }
+
+
+    public void autonomous(){
+        clawLeft.setPosition(0.13);
+        clawRight.setPosition(0.13);
     }
 
 }
