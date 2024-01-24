@@ -63,7 +63,18 @@ public class Mecanum extends SampleMecanumDrive {
 //                if (Math.abs(x) < MIN_JOY_VAL) {x=0;}
 //                if (Math.abs(y) < MIN_JOY_VAL) {y=0;}
 
-
+                if (gamepad.isDown(GamepadKeys.Button.DPAD_DOWN)) {
+                    y=-0.6;
+                }
+                if (gamepad.isDown(GamepadKeys.Button.DPAD_UP)) {
+                    y=0.6;
+                }
+                if (gamepad.isDown(GamepadKeys.Button.DPAD_LEFT)) {
+                    x=-0.6;
+                }
+                if (gamepad.isDown(GamepadKeys.Button.DPAD_RIGHT)) {
+                    x=0.6;
+                }
 
                 if (fieldOriented) {
                     double angle = poseEstimate.getHeading();
