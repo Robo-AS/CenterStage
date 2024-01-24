@@ -96,6 +96,8 @@ public class SimplifiedOdometryRobot {
         // motor/device must match the names assigned during the robot configuration.
 
         // !!!  Set the drive direction to ensure positive power drives each wheel forward.
+
+        //SCHIMBA NUMELE LA MOTOARELE SI INITIALIZEZ CA LUMEA
         leftFrontDrive  = setupDriveMotor("leftfront_drive", DcMotor.Direction.REVERSE);
         rightFrontDrive = setupDriveMotor("rightfront_drive", DcMotor.Direction.FORWARD);
         leftBackDrive  = setupDriveMotor( "leftback_drive", DcMotor.Direction.REVERSE);
@@ -103,8 +105,8 @@ public class SimplifiedOdometryRobot {
         imu = myOpMode.hardwareMap.get(IMU.class, "imu");
 
         //  Connect to the encoder channels using the name of that channel.
-        driveEncoder = myOpMode.hardwareMap.get(DcMotor.class, "axial");
-        strafeEncoder = myOpMode.hardwareMap.get(DcMotor.class, "lateral");
+        driveEncoder = myOpMode.hardwareMap.get(DcMotor.class, "axial");//OX
+        strafeEncoder = myOpMode.hardwareMap.get(DcMotor.class, "lateral");//OY
 
         // Set all hubs to use the AUTO Bulk Caching mode for faster encoder reads
         List<LynxModule> allHubs = myOpMode.hardwareMap.getAll(LynxModule.class);

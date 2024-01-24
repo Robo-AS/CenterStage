@@ -51,7 +51,7 @@ public class Mecanum extends SampleMecanumDrive {
                 double mult_rotation = 0.7;
                 if(gamepad.isDown(GamepadKeys.Button.LEFT_BUMPER)){
                     mult = 0.2;
-                    mult_rotation = 0.3;
+                    mult_rotation = 0.3;//SCAD ASTA SA FAC ROTATIA MAI INCEATA
                 }
 
 
