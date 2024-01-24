@@ -28,7 +28,7 @@ public class Arm {
     static final  double DRIVE_GEAR_REDUCTION_LINEAR = 1;
     static final double DRIVE_GEAR_REDUCTION_CIRCULAR = 28;
     public static double PULLEY_CIRCUMFERENCE_MM = 112;   //aprox. 122 mm
-    static final double COUNTS_PER_P471ULLEY_REV = COUNTS_PER_MOTOR_REV_LINEAR * DRIVE_GEAR_REDUCTION_LINEAR; //751.8 ticks
+    static final double COUNTS_PER_PULLEY_REV = COUNTS_PER_MOTOR_REV_LINEAR * DRIVE_GEAR_REDUCTION_LINEAR; //751.8 ticks
     static final double COUNTS_PER_MM = COUNTS_PER_PULLEY_REV / PULLEY_CIRCUMFERENCE_MM; //aprox 6.162 ticks/mm
 
     static final double COUNTS_PER_GEAR_REV = COUNTS_PER_MOTOR_REV_CIRCULAR * DRIVE_GEAR_REDUCTION_CIRCULAR;  //4062.8 ticks
