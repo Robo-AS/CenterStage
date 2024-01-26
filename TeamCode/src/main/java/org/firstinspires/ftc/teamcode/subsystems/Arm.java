@@ -23,8 +23,8 @@ public class Arm {
     private DcMotorEx circularMovementMotor, linearSlideMotor;
     private Servo servoClawAngle;
 
-    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 145.1;  //motor 1150 rpm
-    static final double COUNTS_PER_MOTOR_REV_LINEAR = 1425.1; //motor 117 rpm
+    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 384.5; //motor 435 rpm
+    static final double COUNTS_PER_MOTOR_REV_LINEAR = 145.1; //motor 1150 rpm
     static final  double DRIVE_GEAR_REDUCTION_LINEAR = 1;
     static final double DRIVE_GEAR_REDUCTION_CIRCULAR = 28;
     public static double PULLEY_CIRCUMFERENCE_MM = 112;   //aprox. 122 mm
@@ -45,19 +45,38 @@ public class Arm {
 
 
 
-    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 0.0, 90.0, 220.0);
-    List<Double> listOfArmAngles = Arrays.asList(0.0, 25.0, 162.0, 160.0);
-    List<Double> listOfClawAngles = Arrays.asList(0.0, 0.0, 0.45, 0.45);
+//    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 0.0, 90.0, 220.0);
+//    List<Double> listOfArmAngles = Arrays.asList(0.0, 25.0, 162.0, 160.0);
+//    List<Double> listOfClawAngles = Arrays.asList(0.0, 0.0, 0.45, 0.45);
+//    private int arm_position_index = 0;
+//    private double linearSlideMult = 222.0/220.0;
+
+
+//    public static double linearSlidePower = 0.95;
 
 
 
-    public static double linearSlidePower = 0.95;
-    public static double circularPowerUP = 0.65;
 
-    public static double circularPowerDOWN = 0.65;
-    private double linearSlideMult = 222.0/220.0;
 
-    private int arm_position_index = 0;
+
+    public static double linearSlidePower_1 = 0.01;
+    public static double linearSlidePower_2 = 0.01;
+    public static double circularPower = 1;
+
+
+
+    public static double circularPos_1 = 123.0;
+    public static double circularPos_2 = 116.7;
+
+
+    public static int linearTicks_1 = 36;
+    public static int linearTicks_2 = 10;
+
+    public static double servoAngle_1 = 0.6;
+    public static double servoAngle_2 = 0.61;
+    public static double LINEAR_SLIDE_MAX_POSITION = 300; //tickuri
+    public static double REST_POWER = 0.01;
+
 
     enum States  {
         notLifting,
@@ -77,21 +96,26 @@ public class Arm {
         circularMovementMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
+
+        linearSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
         linearSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
+
+        servoClawAngle.setDirection(Servo.Direction.REVERSE);
         servoClawAngle.setPosition(0);
+
+
     }
 
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
-        //AM INCERCAT AICI SA II DAM PUTERE 0 BRATULUI CAND SE AFLA LA POZITIA 0 - E IDEE BUNA MERITA INCERCAT
-//        if(circularMovementMotor.getCurrentPosition() == listOfArmAngles.get(arm_position_index) && arm_position_index == 0){
-//            armCircularMovement(0, listOfArmAngles.get(arm_position_index));
-//        }
         if(gamepad.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)){
             if(currentState==States.notLifting){
                 currentState=States.liftArm;
+            }
+            else if(currentState==States.liftArm) {
+                currentState = States.closeArm;
             }
             else if(!linearSlideMotor.isBusy() || !circularMovementMotor.isBusy()){
                 //daca nu mere atunci e ca da isBusy mereu
@@ -114,36 +138,32 @@ public class Arm {
 
         switch (currentState){
             case notLifting:
+                if(gamepad.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
+                    armCircularMovement(circularPower, circularPos_1);
+                    servoClawAngle.setPosition(servoAngle_1);
+                }
 
                 if(gamepad.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-                    arm_position_index = Math.min(3, arm_position_index+1);
-                    armCircularMovement( circularPowerUP, listOfArmAngles.get(arm_position_index));
-                    armLinearMovement(linearSlidePower, listOfLinearSlidePositions.get(arm_position_index));
-                    servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
-
+                    armCircularMovement(circularPower, circularPos_2);
+                    servoClawAngle.setPosition(servoAngle_2);
+                    while(!(circularMovementMotor.isBusy())){
+                        linearSlideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    }
                 }
 
 
                 if(gamepad.wasJustPressed((GamepadKeys.Button.DPAD_DOWN))){
-                    arm_position_index=Math.max(0, arm_position_index-1);
-                    armCircularMovement( circularPowerDOWN, listOfArmAngles.get(arm_position_index));
-                    armLinearMovement(linearSlidePower, listOfLinearSlidePositions.get(arm_position_index));
-                    servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
-
+                    armCircularMovement(circularPower, 0.0);
+                    servoClawAngle.setPosition(0);
                 }
 
-//                if (circularMovementMotor.getCurrentPosition()>circularMovementMotor.getTargetPosition()){
-//                    int dist = circularMovementMotor.getCurrentPosition()-circularMovementMotor.getTargetPosition();
-//                    double coeff = dist;
-//                    //coeff = coeff/COUNTS_PER_DEGREE/180.0+0.05;
-//                    coeff = 0.2;
-//                    circularMovementMotor.setPower(0.2);                                                                  //daca nu merge doar pune gen 0.2 sa uceva
-//                }
+
+                armLinearMovement_2(gamepad.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
                 break;
 
 
             case liftArm:
-                armCircularMovement(circularPowerUP, 120.0);
+                armCircularMovement(circularPower, 120.0);
                 armLinearMovement(0.1, 120.0);
                 break;
             case closeArm:
@@ -151,6 +171,10 @@ public class Arm {
                 armLinearMovement(0.1, 50.0);
                 break;
         }
+
+
+        telemetry.addData("linearSlidePos", linearSlideMotor.getCurrentPosition());
+        telemetry.addData("circularMotionMotor", circularMovementMotor.getCurrentPosition());
 
     }
 
@@ -169,6 +193,22 @@ public class Arm {
         circularMovementMotor.setTargetPosition(targetTicks );
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         circularMovementMotor.setPower(power);
+    }
+
+
+    public void armLinearMovement_2(double linearSlidePower){
+        if(linearSlideMotor.getCurrentPosition() >= LINEAR_SLIDE_MAX_POSITION && linearSlidePower > -0.25){
+            linearSlideMotor.setPower(REST_POWER);
+            return;
+        }
+        else if(linearSlideMotor.getCurrentPosition() <= 0 && linearSlidePower < 0.25){
+            linearSlideMotor.setPower(REST_POWER);
+            return;
+        }
+        if(linearSlidePower == 0)
+            linearSlideMotor.setPower(REST_POWER);
+        else linearSlideMotor.setPower(linearSlidePower/2);
+
 
     }
 

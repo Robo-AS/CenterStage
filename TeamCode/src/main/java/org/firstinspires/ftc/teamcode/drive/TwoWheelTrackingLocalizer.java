@@ -52,7 +52,7 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     // Parallel/Perpendicular to the forward axis
     // Parallel wheel is parallel to the forward axis
     // Perpendicular is perpendicular to the forward axis
-    private Encoder parallelEncoder, perpendicularEncoder;
+    private Encoder axial, lateral;
 
     private SampleMecanumDrive drive;
 
@@ -64,13 +64,13 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
 
         this.drive = drive;
 
-        parallelEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "parallelEncoder"));
-        perpendicularEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "perpendicularEncoder"));
+        axial = new Encoder(hardwareMap.get(DcMotorEx.class, "axial"));
+        lateral = new Encoder(hardwareMap.get(DcMotorEx.class, "lateral"));
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
-        perpendicularEncoder.setDirection(Encoder.Direction.REVERSE);
+        lateral.setDirection(Encoder.Direction.REVERSE);
 
-        parallelEncoder.setDirection(Encoder.Direction.REVERSE);
+        axial.setDirection(Encoder.Direction.REVERSE);
 
     }
 
@@ -92,8 +92,8 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
     @Override
     public List<Double> getWheelPositions() {
         return Arrays.asList(
-                encoderTicksToMM(parallelEncoder.getCurrentPosition())*X_MULT,
-                encoderTicksToMM(perpendicularEncoder.getCurrentPosition())*Y_MULT
+                encoderTicksToMM(axial.getCurrentPosition())*X_MULT,
+                encoderTicksToMM(lateral.getCurrentPosition())*Y_MULT
         );
     }
 
@@ -105,8 +105,8 @@ public class TwoWheelTrackingLocalizer extends TwoTrackingWheelLocalizer {
         //  compensation method
 
         return Arrays.asList(
-                encoderTicksToMM(parallelEncoder.getRawVelocity())*X_MULT,
-                encoderTicksToMM(perpendicularEncoder.getRawVelocity())*Y_MULT
+                encoderTicksToMM(axial.getRawVelocity())*X_MULT,
+                encoderTicksToMM(lateral.getRawVelocity())*Y_MULT
         );
     }
 }

@@ -56,25 +56,13 @@ public class Mecanum extends SampleMecanumDrive {
 
 
                 double x = -gamepad.getLeftY();
-                double y = gamepad.getLeftX()*2;
-                double h = -gamepad.getRightX()*0.9;
+                double y = gamepad.getLeftX();
+                double h = gamepad.getRightX()*0.9;
 
 
 //                if (Math.abs(x) < MIN_JOY_VAL) {x=0;}
 //                if (Math.abs(y) < MIN_JOY_VAL) {y=0;}
 
-                if (gamepad.isDown(GamepadKeys.Button.DPAD_DOWN)) {
-                    y=-0.6;
-                }
-                if (gamepad.isDown(GamepadKeys.Button.DPAD_UP)) {
-                    y=0.6;
-                }
-                if (gamepad.isDown(GamepadKeys.Button.DPAD_LEFT)) {
-                    x=-0.6;
-                }
-                if (gamepad.isDown(GamepadKeys.Button.DPAD_RIGHT)) {
-                    x=0.6;
-                }
 
                 if (fieldOriented) {
                     double angle = poseEstimate.getHeading();
@@ -118,7 +106,7 @@ public class Mecanum extends SampleMecanumDrive {
 
                 setWeightedDrivePower(newDir);
 
-                if (gamepad.wasJustPressed(GamepadKeys.Button.X)) {
+                if (gamepad.wasJustPressed(GamepadKeys.Button.A)) {
                     mode = Mode.NORMAL;
                 }
 

@@ -51,7 +51,7 @@ public class TeleOpDrive extends LinearOpMode {
             claw.teleop(operator,telemetry);
             arm.teleop(operator, telemetry);
             drone.teleop(driver, telemetry);
-            
+
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.update();

@@ -19,14 +19,12 @@ import org.firstinspires.ftc.teamcode.subsystems.Arm;
  * The IMU gyro is used to stabilize the heading during all motions
  */
 
-@Autonomous(name="Sample Autonomous", group = "Mr. Phil")
+@Autonomous(name="Auto", group = "Mr. Phil")
 public class Auto extends LinearOpMode {
     // get an instance of the "Robot" class.
     SimplifiedOdometryRobot mecanum;
 
     Arm arm;
-
-
 
 
 
@@ -51,25 +49,25 @@ public class Auto extends LinearOpMode {
             // Note, this example takes more than 30 seconds to execute, so turn OFF the auto timer.
 
             // Drive a large rectangle, turning at each corner
-            mecanum.drive(  84, 0.60, 0.25);
-            mecanum.turnTo(90, 0.45, 0.5);
-            mecanum.drive(  72, 0.60, 0.25);
-            mecanum.turnTo(180, 0.45, 0.5);
-            mecanum.drive(  84, 0.60, 0.25);
-            mecanum.turnTo(270, 0.45, 0.5);
-            mecanum.drive(  72, 0.60, 0.25);
-            mecanum.turnTo(0, 0.45, 0.5);
+            mecanum.drive(19, 0.1, 0.25);
+//            mecanum.turnTo(90, 0.45, 0.5);
+//            mecanum.drive(  72, 0.60, 0.25);
+//            mecanum.turnTo(180, 0.45, 0.5);
+//            mecanum.drive(  84, 0.60, 0.25);
+//            mecanum.turnTo(270, 0.45, 0.5);
+//            mecanum.drive(  72, 0.60, 0.25);
+//            mecanum.turnTo(0, 0.45, 0.5);
 
             sleep(500);
 
             // Drive the path again without turning.
-            mecanum.drive(  84, 0.60, 0.15);
-            mecanum.strafe( 72, 0.60, 0.15);
-            mecanum.drive( -84, 0.60, 0.15);
-            mecanum.strafe(-72, 0.60, 0.15);
+//            mecanum.drive(  84, 0.60, 0.15);
+//            mecanum.strafe( 72, 0.60, 0.15);
+//            mecanum.drive( -84, 0.60, 0.15);
+//            mecanum.strafe(-72, 0.60, 0.15);
 
 
-
+            //FAC AICI CELELALTE COMENZI
 
         }
     }
