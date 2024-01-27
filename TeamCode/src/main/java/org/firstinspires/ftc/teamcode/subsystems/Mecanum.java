@@ -56,7 +56,7 @@ public class Mecanum extends SampleMecanumDrive {
 
 
                 double x = -gamepad.getLeftY();
-                double y = gamepad.getLeftX();
+                double y = gamepad.getLeftX()*2;
                 double h = gamepad.getRightX()*0.9;
 
 

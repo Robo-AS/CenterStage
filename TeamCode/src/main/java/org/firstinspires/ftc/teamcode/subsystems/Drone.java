@@ -19,7 +19,7 @@ public class Drone {
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
         if(gamepad.wasJustPressed(GamepadKeys.Button.X))
-            servoPlane.setPosition(0.1);
+            servoPlane.setPosition(0.2);
     }
 
 
