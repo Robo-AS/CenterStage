@@ -47,10 +47,12 @@ public class Mecanum extends SampleMecanumDrive {
                 //double mult = (1 - gamepad.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) * 0.80) *reduction;
 
                 //AM MODIFICAT AICI SA NU MA SCADA GRADUAL MISCAREA
-                double mult = 0.5;
+                double mult_x = 0.5;
+                double mult_y = 0.5;
                 double mult_rotation = 0.7;
                 if(gamepad.isDown(GamepadKeys.Button.LEFT_BUMPER)){
-                    mult = 0.2;
+                    mult_x = 0.2; //inainte 0.2
+                    mult_y = 0.2; //inainte tot 0.2
                     mult_rotation = 0.3;//SCAD ASTA SA FAC ROTATIA MAI INCEATA
                 }
 
@@ -73,8 +75,8 @@ public class Mecanum extends SampleMecanumDrive {
                 }
 
                 Pose2d driveDirection = new Pose2d(
-                        x * mult,
-                        y * mult,
+                        x * mult_x,
+                        y * mult_y,
                         h * mult_rotation);
 
 
