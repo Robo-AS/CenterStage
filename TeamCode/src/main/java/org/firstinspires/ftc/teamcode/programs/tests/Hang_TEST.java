@@ -19,7 +19,7 @@ public class Hang_TEST extends LinearOpMode {
     private DcMotorEx circularMovementMotor, linearSlideMotor;
     private Servo servoClawAngle;
 
-    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 384.5;  //motor 435 rpm
+    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 145.1;  //motor 1150 rpm
     static final double COUNTS_PER_MOTOR_REV_LINEAR = 537.7;
     static final  double DRIVE_GEAR_REDUCTION_LINEAR = 1;
     static final double DRIVE_GEAR_REDUCTION_CIRCULAR = 28;
@@ -36,9 +36,11 @@ public class Hang_TEST extends LinearOpMode {
 
 
 
-    public static double circularPower = 1;
+    public static double circularPower = 0.5;
 
-    public static int circularPos = 80;
+    public static double circularPos = 50;
+
+    public static double servoPos = 0.0;
 
 
 
@@ -87,10 +89,20 @@ public class Hang_TEST extends LinearOpMode {
         while (opModeIsActive()) {
             operator.readButtons();
 
-//
-//            if(operator.wasJustPressed(GamepadKeys.Button.X)){
-//                armCircularMovement(circularPower, circularPos);
-//            }
+
+            if(operator.wasJustPressed(GamepadKeys.Button.X)){
+                armCircularMovement(circularPower, circularPos);
+                servoClawAngle.setPosition(servoPos);
+            }
+
+
+            if(operator.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)){
+                armCircularMovement(circularPower, 0.0);
+                servoClawAngle.setPosition(0);
+
+            }
+
+
 
             //PT ASTEA INCEARCA STOP_AND_RESET_ENCODER DE FIECARE DATA CAND APESI DPAD
 

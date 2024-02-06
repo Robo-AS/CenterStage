@@ -23,8 +23,8 @@ public class Arm {
     private DcMotorEx circularMovementMotor, linearSlideMotor;
     private Servo servoClawAngle;
 
-    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 384.5; //motor 435 rpm
-    static final double COUNTS_PER_MOTOR_REV_LINEAR = 537.7; //motor 300 ceva rpm
+    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 145.1; //motor 1150 rpm
+    static final double COUNTS_PER_MOTOR_REV_LINEAR = 537.7; //motor 312 rpm
     static final  double DRIVE_GEAR_REDUCTION_LINEAR = 1;
     static final double DRIVE_GEAR_REDUCTION_CIRCULAR = 28;
     public static double PULLEY_CIRCUMFERENCE_MM = 112;   //aprox. 122 mm
@@ -52,31 +52,24 @@ public class Arm {
 
 
 
-    public static double circularPower = 1;
+    public static double circularPower = 0.5;
     public static double circularPos_2 = 123.0;
-    public static double circularPos_3 = 116.7;
+    public static double circularPos_3 = 115.0;
 
-    public static double hangAngle = 80.0;
-
-
+    public static double hangAngle = 50.0;
 
 
-    public static double servoAngle_1 = 0.6;
-    public static double servoAngle_3 = 0.61;
+
+
+    public static double servoAngle_1 = 0.62;
+    public static double servoAngle_3 = 0.65;
 
 
 
     public static int ticksToMoveUP = 110;
 
-    public static double powerToMove = 0.9;
+    public static double powerToMove = 1;
 
-//    enum States  {
-//        notLifting,
-//        liftArm,
-//        closeArm
-//    }
-
-    //States currentState=States.notLifting;
 
     public Arm(HardwareMap hardwareMap){
         linearSlideMotor = hardwareMap.get(DcMotorEx.class, "linearSlideMotor");
@@ -119,7 +112,7 @@ public class Arm {
 
 
         if(gamepad.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-            arm_position_index = Math.min(3, arm_position_index+1);
+            arm_position_index = Math.min(2, arm_position_index+1);
             armCircularMovement(circularPower, listOfArmAngles.get(arm_position_index));
             servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
         }
@@ -133,51 +126,13 @@ public class Arm {
 
         if(gamepad.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
             armCircularMovement(circularPower, circularPos_2);
+            servoClawAngle.setPosition(servoAngle_1);
         }
 
-        if(gamepad.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)){
+        if(gamepad.wasJustPressed(GamepadKeys.Button.X)){
             armCircularMovement(circularPower, hangAngle);
+            servoClawAngle.setPosition(0.0);
         }
-
-//        if(gamepad.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)){
-//            if(currentState==States.notLifting){
-//                currentState=States.liftArm;
-//            }
-//            else if(currentState==States.liftArm) {
-//                currentState = States.closeArm;
-//            }
-//            else if(!linearSlideMotor.isBusy() || !circularMovementMotor.isBusy()){
-//                //daca nu mere atunci e ca da isBusy mereu
-//                //allternativ incearca sa vezi diferenta intre targetPosition si currentPosition si daca e mai mic de cat gen 5-6 ticks sau ceva
-//
-////
-////                 if(Math.abs(linearSlideMotor.getCurrentPosition-linearSlideMotor.getTargetPosition())<6 &&
-////                Math.abs(circularSlideMotor.getCurrentPosition-circularSlideMotor.getTargetPosition())<6)
-//
-//                if(currentState==States.liftArm){
-//                    currentState=States.closeArm;
-//                }else if(currentState==States.closeArm){
-//                    currentState=States.notLifting;
-//                }
-//            }
-//        }
-//
-//        switch (currentState){
-//            case notLifting:
-//
-//
-//                break;
-//
-//
-//            case liftArm:
-//                armCircularMovement(circularPower, 120.0);
-//                armLinearMovement(0.1, 120.0);
-//                break;
-//            case closeArm:
-//                //AICI AVEM PROBLEMA CA SA CONSTRACTA IN CONTINUU
-//                armLinearMovement(0.1, 50.0);
-//                break;
-//        }
 
 
         telemetry.addData("linearSlidePos", linearSlideMotor.getCurrentPosition());
@@ -197,7 +152,7 @@ public class Arm {
 
     public void armCircularMovement(double power, double degrees){
         int targetTicks = (int)(degrees * COUNTS_PER_DEGREE);
-        circularMovementMotor.setTargetPosition(targetTicks );
+        circularMovementMotor.setTargetPosition(targetTicks);
         circularMovementMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         circularMovementMotor.setPower(power);
     }

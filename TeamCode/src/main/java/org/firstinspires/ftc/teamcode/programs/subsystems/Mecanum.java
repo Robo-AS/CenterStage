@@ -26,6 +26,7 @@ public class Mecanum {
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private List<DcMotorEx> motors;
     Gamepad gamepad;
+    public static double power = 1.37;
 
     double reverse = 1.0;
 
@@ -42,9 +43,9 @@ public class Mecanum {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
+
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-        leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
     public void run(GamepadEx gamepad, Telemetry telemetry) {

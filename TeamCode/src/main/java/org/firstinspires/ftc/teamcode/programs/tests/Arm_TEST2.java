@@ -19,7 +19,7 @@ public class Arm_TEST2 extends LinearOpMode {
     private DcMotorEx circularMovementMotor, linearSlideMotor;
     private Servo servoClawAngle;
 
-    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 384.5;  //motor 435 rpm
+    static final double COUNTS_PER_MOTOR_REV_CIRCULAR = 145.1;  //motor 1150 rpm
     static final double COUNTS_PER_MOTOR_REV_LINEAR = 537.7;
     static final  double DRIVE_GEAR_REDUCTION_LINEAR = 1;
     static final double DRIVE_GEAR_REDUCTION_CIRCULAR = 28;
@@ -41,17 +41,17 @@ public class Arm_TEST2 extends LinearOpMode {
 
 
 
-    public static double circularPower = 1;
+    public static double circularPower = 0.5;
 
     public static double circularPos_1 = 123.0;
-    public static double circularPos_2 = 116.7;
+    public static double circularPos_2 = 115.0;
 
 
 //    public static int linearTicks_1 = 36;
 //    public static int linearTicks_2 = 10;
 
-    public static double servoAngle_1 = 0.6;
-    public static double servoAngle_2 = 0.61;
+    public static double servoAngle_1 = 0.62;
+    public static double servoAngle_2 = 0.65;
 
 
     public static double LINEAR_SLIDE_MAX_POSITION = 300; //tickuri
@@ -99,13 +99,6 @@ public class Arm_TEST2 extends LinearOpMode {
         while (opModeIsActive()) {
             operator.readButtons();
 
-//            if(circularMovementMotor.isBusy()){
-//                telemetry.addData("busy motor","idk");
-//            }
-//            else{
-//                circularMovementMotor.setPower(0);
-//                circularMovementMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//            }
 
             if(operator.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
                 armCircularMovement(circularPower, circularPos_1);
