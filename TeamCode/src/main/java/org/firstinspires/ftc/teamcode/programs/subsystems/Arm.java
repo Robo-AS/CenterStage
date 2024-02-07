@@ -3,14 +3,11 @@ package org.firstinspires.ftc.teamcode.programs.subsystems;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
-import com.arcrobotics.ftclib.gamepad.TriggerReader;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -45,30 +42,30 @@ public class Arm {
 
 
 
-//    List<Double> listOfLinearSlidePositions = Arrays.asList(0.0, 0.0, 90.0, 220.0);
     List<Double> listOfArmAngles = Arrays.asList(0.0, 0.0, circularPos_3);
     List<Double> listOfClawAngles = Arrays.asList(0.0, servoAngle_1, servoAngle_3);
     private int arm_position_index = 0;
 
 
 
+    public static int ticksToMove = 110;
+    public static double linearPower = 1;
     public static double circularPower = 0.5;
+
     public static double circularPos_2 = 123.0;
     public static double circularPos_3 = 115.0;
-
     public static double hangAngle = 50.0;
-
-
 
 
     public static double servoAngle_1 = 0.62;
     public static double servoAngle_3 = 0.65;
 
+    public boolean pos2 = false;
 
 
-    public static int ticksToMoveUP = 110;
 
-    public static double powerToMove = 1;
+
+
 
 
     public Arm(HardwareMap hardwareMap){
@@ -95,17 +92,16 @@ public class Arm {
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
 
-
-        if(gamepad.isDown(GamepadKeys.Button.RIGHT_BUMPER) && linearSlideMotor.getCurrentPosition() <= 2065-ticksToMoveUP){
-            linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() + ticksToMoveUP);
+        if(gamepad.isDown(GamepadKeys.Button.RIGHT_BUMPER) && linearSlideMotor.getCurrentPosition() <= 2065- ticksToMove){
+            linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() + ticksToMove);
             linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            linearSlideMotor.setPower(powerToMove);
+            linearSlideMotor.setPower(linearPower);
         }
 
-        if(gamepad.isDown(GamepadKeys.Button.LEFT_BUMPER) && linearSlideMotor.getCurrentPosition() >= ticksToMoveUP){
-            linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() - ticksToMoveUP);
+        if(gamepad.isDown(GamepadKeys.Button.LEFT_BUMPER) && linearSlideMotor.getCurrentPosition() >= ticksToMove){
+            linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() - ticksToMove);
             linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-            linearSlideMotor.setPower(powerToMove);
+            linearSlideMotor.setPower(linearPower);
         }
 
 
@@ -119,12 +115,18 @@ public class Arm {
 
 
         if(gamepad.wasJustPressed((GamepadKeys.Button.DPAD_DOWN))){
+            if(pos2) {
+                arm_position_index = 2;
+                pos2 = false;
+            }
+
             arm_position_index=Math.max(0, arm_position_index-1);
             armCircularMovement(circularPower, listOfArmAngles.get(arm_position_index));
             servoClawAngle.setPosition(listOfClawAngles.get(arm_position_index));
         }
 
         if(gamepad.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
+            pos2 = true;
             armCircularMovement(circularPower, circularPos_2);
             servoClawAngle.setPosition(servoAngle_1);
         }
@@ -139,8 +141,6 @@ public class Arm {
         telemetry.addData("circularMotionMotor", circularMovementMotor.getCurrentPosition());
 
     }
-
-
 
     private void armLinearMovement(double power, double linear_slide_mm){
         int targetTicks = (int) (linear_slide_mm * COUNTS_PER_MM);

@@ -17,8 +17,8 @@ public class Claw_TEST extends LinearOpMode {
     private Servo clawRight;
     private Servo clawLeft;
 
-    public static double clawOpen = 0.090;
-    private double clawClosed = 0;
+    public static double clawOpen = 0.13;
+    public static double clawClosed = 0;
 
     private boolean rightOpen = false;
     private boolean leftOpen = false;

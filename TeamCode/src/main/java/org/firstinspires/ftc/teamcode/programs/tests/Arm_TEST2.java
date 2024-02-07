@@ -54,15 +54,14 @@ public class Arm_TEST2 extends LinearOpMode {
     public static double servoAngle_2 = 0.65;
 
 
-    public static double LINEAR_SLIDE_MAX_POSITION = 300; //tickuri
-    public static double REST_POWER = 0.001;
 
 
+//    public static int divider = 4;
 
-    public static int divider = 4;
+    public static int ticksToMove = 110;
+    public static double powerToMove = 1;
 
-    public static int ticksToMove = 80;
-    public static double powerToMove = 0.8;
+    public static double CLAW_INIT = 0;
 
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -91,14 +90,13 @@ public class Arm_TEST2 extends LinearOpMode {
 
 
         servoClawAngle.setDirection(Servo.Direction.REVERSE);
-        servoClawAngle.setPosition(0);
+        servoClawAngle.setPosition(CLAW_INIT);
 
         waitForStart();
         runtime.reset();
 
         while (opModeIsActive()) {
             operator.readButtons();
-
 
             if(operator.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
                 armCircularMovement(circularPower, circularPos_1);
@@ -115,14 +113,14 @@ public class Arm_TEST2 extends LinearOpMode {
 
             if(operator.wasJustPressed((GamepadKeys.Button.DPAD_DOWN))){
                 armCircularMovement(circularPower, 0.0);
-                servoClawAngle.setPosition(0);
+                servoClawAngle.setPosition(CLAW_INIT);
             }
 
-            //armLinearMovement_2(operator.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) - operator.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER));
 
 
-            //PT ASTEA INCEARCA STOP_AND_RESET_ENCODER DE FIECARE DATA CAND APESI DPAD
-            //
+
+
+
             if(operator.isDown(GamepadKeys.Button.RIGHT_BUMPER) && linearSlideMotor.getCurrentPosition() <= 2065-ticksToMove){
                 linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() + ticksToMove);
                 linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
@@ -143,12 +141,12 @@ public class Arm_TEST2 extends LinearOpMode {
 
     }
 
-    private void armLinearMovement(double power, int targetTicks){
-//        int targetTicks = (int) (linear_slide_mm * COUNTS_PER_MM);
-        linearSlideMotor.setTargetPosition(targetTicks);
-        linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        linearSlideMotor.setPower(power);
-    }
+//    private void armLinearMovement(double power, int targetTicks){
+////        int targetTicks = (int) (linear_slide_mm * COUNTS_PER_MM);
+//        linearSlideMotor.setTargetPosition(targetTicks);
+//        linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        linearSlideMotor.setPower(power);
+//    }
 
 
     public void armCircularMovement(double power, double degrees){
@@ -162,21 +160,21 @@ public class Arm_TEST2 extends LinearOpMode {
 
 
 
-    public void armLinearMovement_2(double linearSlidePower){
-
-        if(linearSlideMotor.getCurrentPosition() >= LINEAR_SLIDE_MAX_POSITION && linearSlidePower > 0){
-            linearSlideMotor.setPower(REST_POWER);
-            return;
-        }
-        else if(linearSlideMotor.getCurrentPosition() <= 0 && linearSlidePower < 0){
-            linearSlideMotor.setPower(REST_POWER);
-            return;
-        }
-        else if(linearSlidePower==0 && linearSlideMotor.getCurrentPosition()!=0){
-            linearSlideMotor.setPower(REST_POWER);
-        }
-        else linearSlideMotor.setPower(linearSlidePower/divider);
-    }
+//    public void armLinearMovement_2(double linearSlidePower){
+//
+//        if(linearSlideMotor.getCurrentPosition() >= LINEAR_SLIDE_MAX_POSITION && linearSlidePower > 0){
+//            linearSlideMotor.setPower(REST_POWER);
+//            return;
+//        }
+//        else if(linearSlideMotor.getCurrentPosition() <= 0 && linearSlidePower < 0){
+//            linearSlideMotor.setPower(REST_POWER);
+//            return;
+//        }
+//        else if(linearSlidePower==0 && linearSlideMotor.getCurrentPosition()!=0){
+//            linearSlideMotor.setPower(REST_POWER);
+//        }
+//        else linearSlideMotor.setPower(linearSlidePower/divider);
+//    }
 
 
 }

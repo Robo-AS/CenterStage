@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.programs.subsystems;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -25,10 +26,11 @@ public class Mecanum {
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
     private List<DcMotorEx> motors;
-    Gamepad gamepad;
-    public static double power = 1.37;
 
     double reverse = 1.0;
+    public static double powerReduction = 2.0;
+
+
 
     public Mecanum(HardwareMap hardwareMap) {
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
@@ -43,10 +45,12 @@ public class Mecanum {
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
-
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
     }
+
+
+
 
     public void run(GamepadEx gamepad, Telemetry telemetry) {
         double x = -gamepad.getLeftX();
@@ -68,12 +72,26 @@ public class Mecanum {
         rightFront.setPower(rightFrontPower);
         leftRear.setPower(leftRearPower);
         rightRear.setPower(rightRearPower);
+
+        //Slow motion
+        if(gamepad.isDown(GamepadKeys.Button.LEFT_BUMPER)){
+            leftFront.setPower(leftFrontPower/powerReduction);
+            rightFront.setPower(rightFrontPower/powerReduction);
+            leftRear.setPower(leftRearPower/powerReduction);
+            rightRear.setPower(rightRearPower/powerReduction);
+        }
+
+
+
+
     }
 
     public double addons(double value) {
         if (Math.abs(value) < CONTROLLER_DEADZONE) return 0;
         return value * ROBOT_SPEED;
     }
+
+
 
     public void setReverse(boolean isReverse) {
         if (isReverse) reverse = -1.0;
@@ -96,4 +114,5 @@ public class Mecanum {
         telemetry.addData("LeftFront Power: ", leftFront.getPower());
         telemetry.addData("RightFront Power: ", rightFront.getPower());
     }
+
 }

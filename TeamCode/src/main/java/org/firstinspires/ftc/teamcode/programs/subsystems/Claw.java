@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.programs.subsystems;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -9,14 +10,14 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.gamepad.TriggerReader;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-
+@Config
 public class Claw {
 
     private Servo clawRight;
     private Servo clawLeft;
 
-    private double clawOpen = 0.13;
-    private double clawClosed = 0;
+    public static double clawOpen = 0.13;
+    public static double clawClosed = 0;
 
     private boolean rightOpen = false;
     private boolean leftOpen = false;
@@ -29,9 +30,8 @@ public class Claw {
         clawRight.setDirection(Servo.Direction.REVERSE);
 
 
-        clawLeft.setPosition(0);
-        clawRight.setPosition(0);
-
+        clawLeft.setPosition(clawClosed);
+        clawRight.setPosition(clawClosed);
 
     }
 
@@ -45,24 +45,17 @@ public class Claw {
             leftOpen = !leftOpen;
             clawLeft.setPosition(leftOpen ? clawOpen : clawClosed);
         }
+
         if(gamepad.wasJustPressed(GamepadKeys.Button.Y)){
             rightOpen = !rightOpen;
             clawRight.setPosition(rightOpen ? clawOpen : clawClosed);
         }
 
-
         telemetry.addData("openLeftClaw", leftOpen);
         telemetry.addData("openRightClaw", rightOpen);
 
 
-
-
     }
 
-
-    public void autonomous(){
-        clawLeft.setPosition(0.13);
-        clawRight.setPosition(0.13);
-    }
 
 }
