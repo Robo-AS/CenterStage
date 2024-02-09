@@ -54,10 +54,15 @@ public class LeftRed extends LinearOpMode {
 
         waitForStart();
 
-        drive.followTrajectorySequence(trajectory.get(0));
+        sleep(AutonomousConstants.SLEEP);
+        claw.autonomousOpenRightClaw();
+        sleep(AutonomousConstants.SLEEP);
+        //arm.autonomousAngleUp();
 
-//        drive.followTrajectorySequence(trajectory.get(1));
-//
+        drive.followTrajectorySequence(trajectory.get(1));
+        sleep(AutonomousConstants.SLEEP);
+        //claw.autonomousOpenLeftClaw();
+
 //        drive.followTrajectorySequence(trajectory.get(2));
 
         while (!isStopRequested() && opModeIsActive()) {

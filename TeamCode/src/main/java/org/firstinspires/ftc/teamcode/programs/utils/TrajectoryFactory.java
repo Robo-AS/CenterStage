@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.programs.utils;
 
 import static org.firstinspires.ftc.teamcode.programs.utils.AutonomousConstants.PixelForward;
-import static org.firstinspires.ftc.teamcode.programs.utils.AutonomousConstants.SLIDES_COORDINATES;
+
 import static org.firstinspires.ftc.teamcode.programs.utils.AutonomousConstants.coordinatesConvert;
 
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrajectoryFactory {
-    public static List<TrajectorySequence> createTrajectory(SampleMecanumDrive drive, GameElementDetection.Position position,  Telemetry telemetry, boolean isBlue, boolean isClose) {
+    public static List<TrajectorySequence> createTrajectory(SampleMecanumDrive drive, GameElementDetection.Position position, Telemetry telemetry, boolean isBlue, boolean isClose) {
         AutonomousConstants.Coordinates pixelCoordinates;
         Pose2d parkPose = coordinatesConvert(AutonomousConstants.Park);
         Pose2d cornerPose;
@@ -27,7 +27,7 @@ public class TrajectoryFactory {
         Pose2d backPose;
         Pose2d startPose;
 
-       List<TrajectorySequence> trajectories = new ArrayList<TrajectorySequence>();
+        List<TrajectorySequence> trajectories = new ArrayList<TrajectorySequence>();
 
         int multiplier = isBlue ? -1 : 1;
         int backBoardOffset;
@@ -50,12 +50,10 @@ public class TrajectoryFactory {
                 backboardPose = coordinatesConvert(AutonomousConstants.BackboardLeft);
             if (isBlue)
                 pixelCoordinates.heading = 130;
-        }
-        else if (position == GameElementDetection.Position.MIDDLE) {
+        } else if (position == GameElementDetection.Position.MIDDLE) {
             pixelCoordinates = AutonomousConstants.PixelMiddle;
             backboardPose = coordinatesConvert(AutonomousConstants.BackboardMiddle);
-        }
-        else {
+        } else {
             pixelCoordinates = AutonomousConstants.PixelLeft;
             pixelCoordinates.heading = 130;
             backboardPose = coordinatesConvert(AutonomousConstants.BackboardLeft);
@@ -68,8 +66,7 @@ public class TrajectoryFactory {
         if (isClose) {
             backPose = coordinatesConvert(AutonomousConstants.Back);
             cornerPose = coordinatesConvert(AutonomousConstants.CornerPark);
-        }
-        else {
+        } else {
             backPose = coordinatesConvert(AutonomousConstants.FarBack);
             cornerPose = coordinatesConvert(AutonomousConstants.FarCornerPark);
         }
@@ -80,23 +77,28 @@ public class TrajectoryFactory {
                     .setReversed(true)
                     .lineTo(new Vector2d(startPose.getX(), startPose.getY() + PixelForward.y * multiplier))
                     .splineTo(new Vector2d(startPose.getX() + pixelCoordinates.x * multiplier, startPose.getY() + pixelCoordinates.y * multiplier), Math.toRadians(pixelCoordinates.heading * multiplier))
+                    .setReversed(false)
                     .build());
 
-            trajectories.add(drive.trajectorySequenceBuilder(new Pose2d(startPose.getX() + pixelCoordinates.x * multiplier, startPose.getY() + pixelCoordinates.y * multiplier, parkPose.getHeading()))
-                    .setReversed(true)
-                    .lineTo(new Vector2d(startPose.getX(), backPose.getY() * multiplier))
+            telemetry.addData("angle: ", drive.getPoseEstimate().getHeading());
+            telemetry.addData("angle: ", drive.getPoseEstimate().getX());
+            telemetry.addData("angle: ", drive.getPoseEstimate().getY());
+            telemetry.update();
+
+            trajectories.add(drive.trajectorySequenceBuilder(new Pose2d(startPose.getX() + pixelCoordinates.x * multiplier, startPose.getY() + pixelCoordinates.y * multiplier, drive.getPoseEstimate().getHeading() ))
+                    .setReversed(false)
+//                    .lineToConstantHeading(new Vector2d(startPose.getX(), backPose.getY() * multiplier))
+                    .lineToLinearHeading(new Pose2d(startPose.getX() + 10, backPose.getY() * multiplier, Math.toRadians(90)))
                     .setReversed(false)
                     .lineToLinearHeading(new Pose2d(parkPose.getX(), parkPose.getY() * multiplier, parkPose.getHeading()))
-                    .lineTo(new Vector2d(backboardPose.getX(), (backboardPose.getY()-0.5) * multiplier))
+                    .lineTo(new Vector2d(backboardPose.getX(), (backboardPose.getY() - 0.5) * multiplier))
                     .build());
 
-            trajectories.add(drive.trajectorySequenceBuilder(new Pose2d(backboardPose.getX(),backboardPose.getY()*multiplier, parkPose.getHeading()))
+            trajectories.add(drive.trajectorySequenceBuilder(new Pose2d(backboardPose.getX(), backboardPose.getY() * multiplier, parkPose.getHeading()))
                     .lineTo(new Vector2d(backboardPose.getX() - 2, cornerPose.getY() * multiplier))
                     .lineTo(new Vector2d(cornerPose.getX(), cornerPose.getY() * multiplier))
                     .build());
-        }
-        else
-        {
+        } else {
             trajectories.add(drive.trajectorySequenceBuilder(startPose)
                     .setReversed(true)
                     .lineTo(new Vector2d(startPose.getX(), startPose.getY() + PixelForward.y * multiplier))
@@ -109,13 +111,13 @@ public class TrajectoryFactory {
                     .build());
 
             trajectories.add(drive.trajectorySequenceBuilder(
-                    new Pose2d(parkPose.getX() - 35, (backPose.getY() + 2) * multiplier, parkPose.getHeading()))
+                            new Pose2d(parkPose.getX() - 35, (backPose.getY() + 2) * multiplier, parkPose.getHeading()))
                     .setReversed(true)
-                    .lineTo(new Vector2d(backboardPose.getX() + 0.5, (backboardPose.getY()+2) * multiplier + backBoardOffset))
+                    .lineTo(new Vector2d(backboardPose.getX() + 0.5, (backboardPose.getY() + 2) * multiplier + backBoardOffset))
                     .build());
 
             trajectories.add(drive.trajectorySequenceBuilder(
-                    new Pose2d(backboardPose.getX() + 0.5, backboardPose.getY() * multiplier, parkPose.getHeading()))
+                            new Pose2d(backboardPose.getX() + 0.5, backboardPose.getY() * multiplier, parkPose.getHeading()))
                     .setReversed(true)
                     .lineTo(new Vector2d(backboardPose.getX() - 3, backboardPose.getY() * multiplier))
                     .lineTo(new Vector2d(backboardPose.getX(), cornerPose.getY() * +multiplier))

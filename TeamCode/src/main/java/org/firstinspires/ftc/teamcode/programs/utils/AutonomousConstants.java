@@ -30,24 +30,23 @@ public final class AutonomousConstants {
     public static Coordinates PixelRight = new Coordinates(6, 25, 40);
     public static Coordinates PixelForward = new Coordinates(0, 10, 0);
 
-    public static Coordinates Back = new Coordinates(0,-35,0);
+    public static Coordinates Back = new Coordinates(2,-50,0);
     public static Coordinates FarBack = new Coordinates(-5, -58, 90);
 
-    public static Coordinates Park = new Coordinates(45, -35, 0);
+    public static Coordinates Park = new Coordinates(45, -35, 360);
 
     public static Coordinates CornerPark = new Coordinates(45, -62, 0); //left ;a backdropo
 //    public static Coordinates FarCornerPark = new Coordinates(55, -12, 180);
-public static Coordinates FarCornerPark = new Coordinates(45, -30, 180);  //right la backdrop
+public static Coordinates FarCornerPark = new Coordinates(45, -30, 0);  //right la backdrop
 
-    public static Coordinates BackboardMiddle = new Coordinates(42, -38.5, 0);
-    public static Coordinates BackboardRight = new Coordinates(42, -29, 0);
-    public static Coordinates BackboardLeft = new Coordinates(42, -45, 0);
+    public static Coordinates BackboardMiddle = new Coordinates(43, -40, 0);
+    public static Coordinates BackboardRight = new Coordinates(43, -31, 0);
+    public static Coordinates BackboardLeft = new Coordinates(43, -47, 0);
 
     public static Pose2d coordinatesConvert(Coordinates coord) {
         return new Pose2d(coord.x, coord.y, Math.toRadians(coord.heading));
     }
 
-    public static int SLIDES_COORDINATES = 1750;
 
 //    public static int SLEEP = 11500;
     public static int SLEEP = 1000;
