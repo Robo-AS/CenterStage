@@ -40,7 +40,6 @@ public class Claw {
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
 
-
         if(gamepad.wasJustPressed(GamepadKeys.Button.B)){
             leftOpen = !leftOpen;
             clawLeft.setPosition(leftOpen ? clawOpen : clawClosed);
@@ -54,7 +53,14 @@ public class Claw {
         telemetry.addData("openLeftClaw", leftOpen);
         telemetry.addData("openRightClaw", rightOpen);
 
+    }
 
+    public void autonomousOpenRightClaw(){
+        clawRight.setPosition(clawOpen);
+    }
+
+    public void autonomousOpenLeftClaw(){
+        clawLeft.setPosition(clawOpen);
     }
 
 

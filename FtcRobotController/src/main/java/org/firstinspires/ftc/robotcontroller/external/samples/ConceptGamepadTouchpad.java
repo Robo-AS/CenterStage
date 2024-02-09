@@ -34,7 +34,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 
 @Disabled
-@TeleOp(name="Concept: Gamepad Touchpad", group ="Concept")
+//@TeleOp(name="Concept: Gamepad Touchpad", group ="Concept")
 public class ConceptGamepadTouchpad extends LinearOpMode
 {
     @Override

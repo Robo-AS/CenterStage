@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.programs;
+package org.firstinspires.ftc.teamcode.programs.opmode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -47,7 +47,7 @@ public class TeleOpDrive extends LinearOpMode {
             driver.readButtons();
             operator.readButtons();
 
-            mecanum.run(driver,telemetry);
+            mecanum.teleop(driver,telemetry);
             claw.teleop(operator,telemetry);
             arm.teleop(operator, telemetry);
             drone.teleop(driver, telemetry);

@@ -28,7 +28,7 @@ public class Mecanum {
     private List<DcMotorEx> motors;
 
     double reverse = 1.0;
-    public static double powerReduction = 2.0;
+    public static double powerReduction = 4.0;
 
 
 
@@ -52,7 +52,7 @@ public class Mecanum {
 
 
 
-    public void run(GamepadEx gamepad, Telemetry telemetry) {
+    public void teleop(GamepadEx gamepad, Telemetry telemetry) {
         double x = -gamepad.getLeftX();
         double y = -gamepad.getLeftY();
         double r = -gamepad.getRightX();
