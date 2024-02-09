@@ -73,8 +73,10 @@ public class LeftBlue extends LinearOpMode {
         arm.autonomousAngleUp();
         sleep(AutonomousConstants.SLEEP);
         claw.autonomousOpenLeftClaw();
+        sleep(AutonomousConstants.SLEEP);
+        arm.autonomousAngleDown();
 
-//        drive.followTrajectorySequence(trajectory.get(2));
+        drive.followTrajectorySequence(trajectory.get(2));
 
 
 

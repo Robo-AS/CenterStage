@@ -39,7 +39,7 @@ public class Arm {
 
 
     List<Double> listOfArmAngles = Arrays.asList(0.0, 0.0, circularPos_2, circularPos_3);
-    List<Double> listOfClawAngles = Arrays.asList(0.0, servoAngle_1, servoAngle_1, servoAngle_3);
+    List<Double> listOfClawAngles = Arrays.asList(servoAngle_0, servoAngle_1, servoAngle_1, servoAngle_3);
 
     List<Integer> ticksToMoveCase = Arrays.asList(0, 0, ticks2, ticks3);
 
@@ -50,11 +50,12 @@ public class Arm {
 
 
 
+
     public static double linearPower = 1;
     public static double circularPower = 0.8;
 
     public static double initAngleTeleOp = -35.0;   //corectionAngle o sa aiba valoare negativa, deci facand suma cu el defapt scadem din unghiurile anterioare
-    public static double correctionAngleAuto = -30.0;
+    public static double correctionAngleAuto = -25.0;
     public static double circularPos_2 = 123.0;
     public static double circularPos_3 = 115.0;
     public static double hangAngle = 50.0;
@@ -70,7 +71,7 @@ public class Arm {
 
 
     public static int ticksToMoveLinear = 110;
-    public static int ticks2 = -166;
+    public static int ticks2 = -181;
     public static int ticks3 = -170;
 
 
@@ -160,7 +161,7 @@ public class Arm {
 
     public void initAutonomous(){
         servoClawAngle.setPosition(servoAngle_0);
-        //armCircularMovement(circularPower, correctionAngleAuto);
+        armCircularMovement(circularPower, correctionAngleAuto);
     }
 
 

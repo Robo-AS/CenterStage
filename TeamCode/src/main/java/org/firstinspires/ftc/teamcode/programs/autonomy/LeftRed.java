@@ -52,18 +52,28 @@ public class LeftRed extends LinearOpMode {
 
         List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, false, false);
 
-        waitForStart();
+        arm.initAutonomous();
+
+        drive.followTrajectorySequence(trajectory.get(0));
+//        telemetry.addData("angle: ", drive.getPoseEstimate().getHeading());
+//        telemetry.addData("angle: ", drive.getPoseEstimate().getX());
+//        telemetry.addData("angle: ", drive.getPoseEstimate().getY());
+//        telemetry.update();
 
         sleep(AutonomousConstants.SLEEP);
         claw.autonomousOpenRightClaw();
         sleep(AutonomousConstants.SLEEP);
-        //arm.autonomousAngleUp();
+
 
         drive.followTrajectorySequence(trajectory.get(1));
         sleep(AutonomousConstants.SLEEP);
-        //claw.autonomousOpenLeftClaw();
+        arm.autonomousAngleUp();
+        sleep(AutonomousConstants.SLEEP);
+        claw.autonomousOpenLeftClaw();
+        sleep(AutonomousConstants.SLEEP);
+        arm.autonomousAngleDown();
 
-//        drive.followTrajectorySequence(trajectory.get(2));
+        drive.followTrajectorySequence(trajectory.get(2));
 
         while (!isStopRequested() && opModeIsActive()) {
             telemetry.update();
