@@ -41,7 +41,7 @@ public class TeleOpDrive extends LinearOpMode {
         drone = new Drone(hardwareMap);
 
         waitForStart();
-        arm.initAutonomous();
+        //arm.autonomousAngleDown();
         runtime.reset();
 
         while (opModeIsActive()) {

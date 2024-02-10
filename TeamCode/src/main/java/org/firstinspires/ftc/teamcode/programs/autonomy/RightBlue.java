@@ -48,11 +48,21 @@ public class RightBlue extends LinearOpMode {
 
         detection.close();
 
-        List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, true, false);
+        List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, true, true); //AICI TREBUIE ACTUALLY SA FIE FALSE
 
         waitForStart();
 
+//        arm.initAutonomous();
+        arm.autonomousAngleDown();
+
         drive.followTrajectorySequence(trajectory.get(0));
+
+        sleep(AutonomousConstants.SLEEP);
+        claw.autonomousOpenRightClaw();
+        sleep(AutonomousConstants.SLEEP);
+//        arm.autonomousAngleDown();
+
+
 
 //        drive.followTrajectorySequence(trajectory.get(1));
 //

@@ -24,10 +24,10 @@ public final class AutonomousConstants {
     public static Coordinates StartPoseRightBlue = new Coordinates(-35, 67 - 15/2, 90);
 
 //    public static Coordinates PixelLeft = new Coordinates(-4.5, 29, 130);
-    public static Coordinates PixelLeft = new Coordinates(-9, 23, 130); //spline to pixel
+    public static Coordinates PixelLeft = new Coordinates(-9, 22, 130); //spline to pixel//23
 
-    public static Coordinates PixelMiddle = new Coordinates(0, 28, 90); //spline to pixel
-    public static Coordinates PixelRight = new Coordinates(6, 25, 40);
+    public static Coordinates PixelMiddle = new Coordinates(0, 26, 90); //spline to pixel//28
+    public static Coordinates PixelRight = new Coordinates(6, 23, 40);//25
     public static Coordinates PixelForward = new Coordinates(0, 10, 0);
 
     public static Coordinates Back = new Coordinates(2,-50,0);
@@ -49,5 +49,6 @@ public static Coordinates FarCornerPark = new Coordinates(45, -30, 0);  //right 
 
 
 //    public static int SLEEP = 11500;
-    public static int SLEEP = 1500;
+    public static int SLEEP = 1000;
+    public static int SLEEP_BACKBOARD = 1500;
 }

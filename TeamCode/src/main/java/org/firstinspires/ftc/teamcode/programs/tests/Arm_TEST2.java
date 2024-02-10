@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
-@TeleOp(name = "Arm_TEST2", group= "Linear Opmode")
+//@TeleOp(name = "Arm_TEST2", group= "Linear Opmode")
 public class Arm_TEST2 extends LinearOpMode {
 
     GamepadEx operator;

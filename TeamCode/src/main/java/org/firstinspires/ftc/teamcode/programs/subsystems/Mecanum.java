@@ -28,7 +28,7 @@ public class Mecanum {
     private List<DcMotorEx> motors;
 
     double reverse = 1.0;
-    public static double powerReduction = 4.0;
+    public static double powerReduction = 8;
 
 
 

@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.programs.utils.Constants;
  * @verion 1.0
  */
 
-@Autonomous(name = "Test Game Element", group = Constants.TEST_GROUP)
+//@Autonomous(name = "Test Game Element", group = Constants.TEST_GROUP)
 public class TestGameElement extends LinearOpMode {
     GameElementDetection detection;
 

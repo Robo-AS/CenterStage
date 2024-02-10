@@ -50,7 +50,10 @@ public class LeftRed extends LinearOpMode {
 
         detection.close();
 
-        List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, false, false);
+        List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, true, true);
+
+
+        waitForStart();
 
         arm.initAutonomous();
 
@@ -74,6 +77,7 @@ public class LeftRed extends LinearOpMode {
         arm.autonomousAngleDown();
 
         drive.followTrajectorySequence(trajectory.get(2));
+
 
         while (!isStopRequested() && opModeIsActive()) {
             telemetry.update();

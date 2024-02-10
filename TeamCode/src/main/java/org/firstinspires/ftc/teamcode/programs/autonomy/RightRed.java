@@ -50,16 +50,20 @@ public class RightRed extends LinearOpMode {
 
         detection.close();
 
-        List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, false, true);
+        List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, true, true);
 
         waitForStart();
 
+
+        arm.autonomousAngleDown();
+
         drive.followTrajectorySequence(trajectory.get(0));
 
-//
-//        drive.followTrajectorySequence(trajectory.get(1));
-//
-//        drive.followTrajectorySequence(trajectory.get(2));
+        sleep(AutonomousConstants.SLEEP);
+        claw.autonomousOpenRightClaw();
+        sleep(AutonomousConstants.SLEEP);
+
+
 
 
         while (!isStopRequested() && opModeIsActive()) {

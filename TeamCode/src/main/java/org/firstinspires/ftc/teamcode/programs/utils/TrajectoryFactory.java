@@ -71,7 +71,7 @@ public class TrajectoryFactory {
         }
 
         drive.setPoseEstimate(startPose);
-        if (isClose) {
+        if (isClose && multiplier == -1) {
             trajectories.add(drive.trajectorySequenceBuilder(startPose)
                     .setReversed(true)
                     .lineTo(new Vector2d(startPose.getX(), startPose.getY() + PixelForward.y * multiplier))
@@ -97,7 +97,46 @@ public class TrajectoryFactory {
                     .lineTo(new Vector2d(backboardPose.getX() - 2, cornerPose.getY() * multiplier))
                     .lineTo(new Vector2d(cornerPose.getX(), cornerPose.getY() * multiplier))
                     .build());
-        } else {
+        }
+
+
+        else if(isClose && multiplier == 1 ){
+            trajectories.add(drive.trajectorySequenceBuilder(startPose)
+                    .setReversed(true)
+                    .lineTo(new Vector2d(startPose.getX(), startPose.getY() + PixelForward.y * multiplier))
+                    .splineTo(new Vector2d(startPose.getX() + pixelCoordinates.x * multiplier,
+                                    startPose.getY() + pixelCoordinates.y * multiplier),
+                            Math.toRadians(pixelCoordinates.heading * multiplier))
+                    .setReversed(false)
+                    .build());
+
+            telemetry.addData("angle: ", drive.getPoseEstimate().getHeading());
+            telemetry.addData("angle: ", drive.getPoseEstimate().getX());
+            telemetry.addData("angle: ", drive.getPoseEstimate().getY());
+            telemetry.update();
+
+            trajectories.add(drive.trajectorySequenceBuilder(new Pose2d(drive.getPoseEstimate().getX(),
+                            drive.getPoseEstimate().getY(),
+                            drive.getPoseEstimate().getHeading() ))
+                    .setReversed(false)
+//                    .lineToConstantHeading(new Vector2d(startPose.getX(), backPose.getY() * multiplier))
+                    .lineToLinearHeading(new Pose2d(startPose.getX() + 10, backPose.getY() * multiplier, Math.toRadians(90)))
+                    .setReversed(false)
+                    .lineToLinearHeading(new Pose2d(parkPose.getX(), parkPose.getY() * multiplier, parkPose.getHeading()))
+                    .lineTo(new Vector2d(backboardPose.getX(), (backboardPose.getY() - 0.5) * multiplier))
+                    .build());
+
+            trajectories.add(drive.trajectorySequenceBuilder(new Pose2d(backboardPose.getX(), backboardPose.getY() * multiplier, parkPose.getHeading()))
+                    .lineTo(new Vector2d(backboardPose.getX() - 2, cornerPose.getY() * multiplier))
+                    .lineTo(new Vector2d(cornerPose.getX(), cornerPose.getY() * multiplier))
+                    .build());
+        }
+
+
+
+
+
+        else if(!isClose && multiplier == -1) {
             trajectories.add(drive.trajectorySequenceBuilder(startPose)
                     .setReversed(true)
                     .lineTo(new Vector2d(startPose.getX(), startPose.getY() + PixelForward.y * multiplier))
