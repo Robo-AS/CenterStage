@@ -50,7 +50,7 @@ public class LeftRed extends LinearOpMode {
 
         detection.close();
 
-        List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, true, true);
+        List<TrajectorySequence> trajectory = TrajectoryFactory.createTrajectory(drive, position, telemetry, false, true);
 
 
         waitForStart();

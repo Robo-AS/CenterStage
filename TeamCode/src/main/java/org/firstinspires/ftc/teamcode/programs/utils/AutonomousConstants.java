@@ -24,24 +24,38 @@ public final class AutonomousConstants {
     public static Coordinates StartPoseRightBlue = new Coordinates(-35, 67 - 15/2, 90);
 
 //    public static Coordinates PixelLeft = new Coordinates(-4.5, 29, 130);
-    public static Coordinates PixelLeft = new Coordinates(-9, 22, 130); //spline to pixel//23
+    public static Coordinates PixelLeft = new Coordinates(-9, 22, 130); //spline to pixel//-9
 
     public static Coordinates PixelMiddle = new Coordinates(0, 26, 90); //spline to pixel//28
-    public static Coordinates PixelRight = new Coordinates(6, 23, 40);//25
+    public static Coordinates PixelRight = new Coordinates(5, 23, 40);//25
     public static Coordinates PixelForward = new Coordinates(0, 10, 0);
 
     public static Coordinates Back = new Coordinates(2,-50,0);
     public static Coordinates FarBack = new Coordinates(-5, -58, 90);
 
-    public static Coordinates Park = new Coordinates(40, -35, 360);
+    public static Coordinates Park = new Coordinates(42, -35, 360);
 
     public static Coordinates CornerPark = new Coordinates(52, -64, 0); //left ;a backdropo
 //    public static Coordinates FarCornerPark = new Coordinates(55, -12, 180);
 public static Coordinates FarCornerPark = new Coordinates(45, -30, 0);  //right la backdrop
 
+
+
+
+
     public static Coordinates BackboardMiddle = new Coordinates(40, -40, 0);
     public static Coordinates BackboardRight = new Coordinates(40, -31, 0);
     public static Coordinates BackboardLeft = new Coordinates(40, -47, 0);
+
+
+
+//    public static Coordinates BackboardMiddle = new Coordinates(42, -40, 0);
+//    public static Coordinates BackboardRight = new Coordinates(42, -50, 0);
+//    public static Coordinates BackboardLeft = new Coordinates(42, -30, 0);
+
+
+
+
 
     public static Pose2d coordinatesConvert(Coordinates coord) {
         return new Pose2d(coord.x, coord.y, Math.toRadians(coord.heading));

@@ -52,15 +52,15 @@ public class RightBlue extends LinearOpMode {
 
         waitForStart();
 
-//        arm.initAutonomous();
-        arm.autonomousAngleDown();
+        arm.initAutonomous();
+
 
         drive.followTrajectorySequence(trajectory.get(0));
 
         sleep(AutonomousConstants.SLEEP);
         claw.autonomousOpenRightClaw();
         sleep(AutonomousConstants.SLEEP);
-//        arm.autonomousAngleDown();
+        arm.autonomousAngleDown();
 
 
 

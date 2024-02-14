@@ -100,13 +100,11 @@ public class TrajectoryFactory {
         }
 
 
-        else if(isClose && multiplier == 1 ){
+        else if(isClose && multiplier == 1){
             trajectories.add(drive.trajectorySequenceBuilder(startPose)
                     .setReversed(true)
                     .lineTo(new Vector2d(startPose.getX(), startPose.getY() + PixelForward.y * multiplier))
-                    .splineTo(new Vector2d(startPose.getX() + pixelCoordinates.x * multiplier,
-                                    startPose.getY() + pixelCoordinates.y * multiplier),
-                            Math.toRadians(pixelCoordinates.heading * multiplier))
+                    .splineTo(new Vector2d(startPose.getX() + pixelCoordinates.x * multiplier, startPose.getY() + pixelCoordinates.y * multiplier), Math.toRadians(pixelCoordinates.heading * multiplier))
                     .setReversed(false)
                     .build());
 
@@ -115,12 +113,11 @@ public class TrajectoryFactory {
             telemetry.addData("angle: ", drive.getPoseEstimate().getY());
             telemetry.update();
 
-            trajectories.add(drive.trajectorySequenceBuilder(new Pose2d(drive.getPoseEstimate().getX(),
-                            drive.getPoseEstimate().getY(),
-                            drive.getPoseEstimate().getHeading() ))
+            trajectories.add(drive.trajectorySequenceBuilder(new Pose2d(startPose.getX() + pixelCoordinates.x * multiplier, startPose.getY() + pixelCoordinates.y * multiplier, drive.getPoseEstimate().getHeading() ))
                     .setReversed(false)
 //                    .lineToConstantHeading(new Vector2d(startPose.getX(), backPose.getY() * multiplier))
-                    .lineToLinearHeading(new Pose2d(startPose.getX() + 10, backPose.getY() * multiplier, Math.toRadians(90)))
+                    //.lineToLinearHeading(new Pose2d(startPose.getX() + 10, backPose.getY() * multiplier, Math.toRadians(90)))
+                    .lineTo(new Vector2d(startPose.getX() + 10, backPose.getY() * multiplier))
                     .setReversed(false)
                     .lineToLinearHeading(new Pose2d(parkPose.getX(), parkPose.getY() * multiplier, parkPose.getHeading()))
                     .lineTo(new Vector2d(backboardPose.getX(), (backboardPose.getY() - 0.5) * multiplier))
