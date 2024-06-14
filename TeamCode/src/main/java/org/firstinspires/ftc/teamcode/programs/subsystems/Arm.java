@@ -34,6 +34,7 @@ public class Arm {
     //                               - revolutie worm gear - 360 de grade brat
     // 145.1 * 28 - 360 de grade brat
     // 11.285     - 1 grad brat
+    //
 
 
 
