@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
-//@TeleOp(name = "Arm_TEST2", group= "Linear Opmode")
+@TeleOp(name = "Arm_TEST2", group= "Linear Opmode")
 public class Arm_TEST2 extends LinearOpMode {
 
     GamepadEx operator;
@@ -41,14 +41,14 @@ public class Arm_TEST2 extends LinearOpMode {
 
 
 
-    public static double circularPower = 0.5;
-    public static double circularPos_1 = 123.0;
-    public static double circularPos_2 = 115.0;
+    public static double motorPower = 0.1;
+//    public static double circularPos_1 = 123.0;
+//    public static double circularPos_2 = 115.0;
 
 
 
-    public static double servoAngle_1 = 0.62;
-    public static double servoAngle_2 = 0.65;
+//    public static double servoAngle_1 = 0.62;
+//    public static double servoAngle_2 = 0.65;
 
 
 
@@ -74,7 +74,7 @@ public class Arm_TEST2 extends LinearOpMode {
 
         linearSlideMotor = hardwareMap.get(DcMotorEx.class, "linearSlideMotor");
         circularMovementMotor = hardwareMap.get(DcMotorEx.class, "circularMovementMotor");
-        servoClawAngle = hardwareMap.get(Servo.class, "servoClawAngle");
+        //servoClawAngle = hardwareMap.get(Servo.class, "servoClawAngle");
 
         circularMovementMotor.setDirection(DcMotorEx.Direction.REVERSE);
         circularMovementMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -82,13 +82,13 @@ public class Arm_TEST2 extends LinearOpMode {
 
 
 
-        linearSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        //linearSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
         linearSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
-        servoClawAngle.setDirection(Servo.Direction.REVERSE);
-        servoClawAngle.setPosition(CLAW_INIT);
+//        servoClawAngle.setDirection(Servo.Direction.REVERSE);
+//        servoClawAngle.setPosition(CLAW_INIT);
 
 
 
@@ -105,40 +105,61 @@ public class Arm_TEST2 extends LinearOpMode {
         while (opModeIsActive()) {
             operator.readButtons();
 
-            if(operator.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
-                armCircularMovement(circularPower, circularPos_1);
-                servoClawAngle.setPosition(servoAngle_1);
 
-            }
-
-            if(operator.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
-                armCircularMovement(circularPower, circularPos_2);
-                servoClawAngle.setPosition(servoAngle_2);
-
+            if(operator.wasJustPressed(GamepadKeys.Button.X)){
+                armCircularMovement(motorPower, circularMovementMotor.getCurrentPosition()+3);
             }
 
 
-            if(operator.wasJustPressed((GamepadKeys.Button.DPAD_DOWN))){
-                armCircularMovement(circularPower, 0.0);
-                servoClawAngle.setPosition(CLAW_INIT);
+            if(operator.wasJustPressed(GamepadKeys.Button.B)){
+                armCircularMovement(motorPower, circularMovementMotor.getCurrentPosition()-3);
             }
 
 
-
-
-
-
-            if(operator.isDown(GamepadKeys.Button.RIGHT_BUMPER) && linearSlideMotor.getCurrentPosition() <= 2065-ticksToMove){
-                linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() + ticksToMove);
-                linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                linearSlideMotor.setPower(powerToMove);
+            if(operator.wasJustPressed(GamepadKeys.Button.Y)){
+                armLinearMovement(motorPower, linearSlideMotor.getCurrentPosition()+20);
             }
 
-            if(operator.isDown(GamepadKeys.Button.LEFT_BUMPER) && linearSlideMotor.getCurrentPosition() >= ticksToMove){
-                linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() - ticksToMove);
-                linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
-                linearSlideMotor.setPower(powerToMove);
+
+            if(operator.wasJustPressed(GamepadKeys.Button.A)){
+                armLinearMovement(motorPower, linearSlideMotor.getCurrentPosition()-20);
             }
+
+
+//            if(operator.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
+//                armCircularMovement(circularPower, circularPos_1);
+//                servoClawAngle.setPosition(servoAngle_1);
+//
+//            }
+
+//            if(operator.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
+//                armCircularMovement(circularPower, circularPos_2);
+//                servoClawAngle.setPosition(servoAngle_2);
+//
+//            }
+
+//
+//            if(operator.wasJustPressed((GamepadKeys.Button.DPAD_DOWN))){
+//                armCircularMovement(circularPower, 0.0);
+//                servoClawAngle.setPosition(CLAW_INIT);
+//            }
+
+
+
+
+
+
+//            if(operator.isDown(GamepadKeys.Button.RIGHT_BUMPER) && linearSlideMotor.getCurrentPosition() <= 2065-ticksToMove){
+//                linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() + ticksToMove);
+//                linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+//                linearSlideMotor.setPower(powerToMove);
+//            }
+//
+//            if(operator.isDown(GamepadKeys.Button.LEFT_BUMPER) && linearSlideMotor.getCurrentPosition() >= ticksToMove){
+//                linearSlideMotor.setTargetPosition(linearSlideMotor.getCurrentPosition() - ticksToMove);
+//                linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+//                linearSlideMotor.setPower(powerToMove);
+//            }
 
             telemetry.addData("linearSlidePos", linearSlideMotor.getCurrentPosition());
             telemetry.addData("circularMotionMotor", circularMovementMotor.getCurrentPosition());
@@ -163,6 +184,11 @@ public class Arm_TEST2 extends LinearOpMode {
         circularMovementMotor.setPower(power);
     }
 
+    private void armLinearMovement(double power, int targetTicks){
+        linearSlideMotor.setTargetPosition(targetTicks);
+        linearSlideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        linearSlideMotor.setPower(power);
+    }
 
 
 

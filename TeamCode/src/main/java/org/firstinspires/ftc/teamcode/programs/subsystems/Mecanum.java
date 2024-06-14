@@ -93,10 +93,10 @@ public class Mecanum {
 
 
 
-    public void setReverse(boolean isReverse) {
-        if (isReverse) reverse = -1.0;
-        else reverse = 1.0;
-    }
+//    public void setReverse(boolean isReverse) {
+//        if (isReverse) reverse = -1.0;
+//        else reverse = 1.0;
+//    }
 
     public void telemetry(Telemetry telemetry) {
         telemetry.addLine("---ROBOT CENTRIC DRIVE---");

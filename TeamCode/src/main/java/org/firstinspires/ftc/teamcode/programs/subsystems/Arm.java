@@ -51,15 +51,15 @@ public class Arm {
 
 
 
-    public static double linearPower = 1;
-    public static double circularPower = 0.8;
+    public static double linearPower = 1; //1
+    public static double circularPower = 0.65;//0.8
 
     public static double initAngleTeleOp = -37.0;   //corectionAngle o sa aiba valoare negativa, deci facand suma cu el defapt scadem din unghiurile anterioare
 //    public static double correctionAngleAuto = -28.0;
     public static double correctionAngleAuto = -25.0;
 
-    public static double circularPos_2 = 123.0;
-    public static double circularPos_3 = 115.0;
+    public static double circularPos_2 = 105.0;
+    public static double circularPos_3 = 94.5;
     public static double hangAngle = 55.0;
 
 
@@ -73,8 +73,8 @@ public class Arm {
 
 
     public static int ticksToMoveLinear = 110;
-    public static int ticks2 = -181;
-    public static int ticks3 = -170;
+    public static int ticks2 = -193;//-181;
+    public static int ticks3 = -183;//-170
 
 
 
@@ -91,12 +91,11 @@ public class Arm {
         circularMovementMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
 
-
-        linearSlideMotor.setDirection(DcMotorEx.Direction.REVERSE);
         linearSlideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         linearSlideMotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
         servoClawAngle.setDirection(Servo.Direction.REVERSE);
+        servoClawAngle.setPosition(servoAngle_0);
     }
 
 
