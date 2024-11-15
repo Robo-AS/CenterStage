@@ -53,14 +53,14 @@ public class Arm {
 
 
     public static double linearPower = 1; //1
-    public static double circularPower = 0.65;//0.8
+    public static double circularPower = 0.3;//0.8
 
     public static double initAngleTeleOp = -37.0;   //corectionAngle o sa aiba valoare negativa, deci facand suma cu el defapt scadem din unghiurile anterioare
 //    public static double correctionAngleAuto = -28.0;
     public static double correctionAngleAuto = -25.0;
 
-    public static double circularPos_2 = 105.0;
-    public static double circularPos_3 = 94.5;
+    public static double circularPos_2 = 120.0;
+    public static double circularPos_3 = 100.0;
     public static double hangAngle = 55.0;
 
 

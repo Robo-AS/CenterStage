@@ -14,12 +14,13 @@ public class Drone {
 
     public Drone(HardwareMap hardwareMap){
         servoPlane = hardwareMap.get(Servo.class, "servoPlane");
-        servoPlane.setPosition(0);
+        servoPlane.setDirection(Servo.Direction.REVERSE);
+        //servoPlane.setPosition(0);
     }
 
     public void teleop(GamepadEx gamepad, Telemetry telemetry){
         if(gamepad.wasJustPressed(GamepadKeys.Button.X))
-            servoPlane.setPosition(0.2);
+            servoPlane.setPosition(1);
     }
 
 

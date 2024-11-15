@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.programs.utils;
 import com.acmerobotics.dashboard.config.Config;
 
 /**
- * Constants for KronBot viewable from dashboard
- *
  * @version 1.0
  */
 @Config
