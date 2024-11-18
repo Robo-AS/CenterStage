@@ -50,7 +50,7 @@ public class GameElementDetection {
         DetectionPipeline pipeline = new DetectionPipeline();
         pipeline.init(isBlue);
         camera.setPipeline(pipeline);
-        //rotate camera
+        ///rotate camera
         camera.openCameraDevice();
         camera.startStreaming(CAMERA_WIDTH, CAMERA_HEIGHT, OpenCvCameraRotation.UPRIGHT);
     }
